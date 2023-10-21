@@ -74,9 +74,11 @@ class ActQuestionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actChoices.choice_text')
                     ->label('Choices')
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actChoices.actFeedback.activity_feedback')
                     ->label('Feedbacks')
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actHints.first_hint')
                     ->label('Hint')

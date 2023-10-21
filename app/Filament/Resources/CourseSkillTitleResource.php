@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CourseSkillTitleResource\Pages;
 use App\Filament\Resources\CourseSkillTitleResource\RelationManagers;
 use App\Models\CourseSkillTitle;
+use App\Models\SubTopic;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -56,6 +57,7 @@ class CourseSkillTitleResource extends Resource
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Group::make('subTopic.sub_topic_title')
+                    ->getDescriptionFromRecordUsing(fn (SubTopic $record): string => $record->id->getDescription())
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
             ])->defaultGroup('subTopic.topic.level.level')
@@ -77,9 +79,8 @@ class CourseSkillTitleResource extends Resource
                 Tables\Columns\TextColumn::make('subTopic.sub_topic_title')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('skill_name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('course_title')
+                    ->description(fn (CourseSkillTitle $record): string => $record->skill_name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

@@ -44,7 +44,7 @@ class SumQuestionResource extends Resource
                     ->label('Lesson Title')
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
-                Group::make('summativeAssesment.exercise_title')
+                Group::make('summativeAssesment.summative_assesment_title')
                     ->label('Summative Assesment Title')
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
@@ -59,7 +59,7 @@ class SumQuestionResource extends Resource
                     ->label('Lesson Title')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('summativeAssesment.exercise_title')
+                Tables\Columns\TextColumn::make('summativeAssesment.summative_assesment_title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('summativeAssesment.description')

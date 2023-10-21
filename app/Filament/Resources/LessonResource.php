@@ -3,12 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LessonResource\Pages;
+use App\Filament\Resources\LessonResource\Pages\ListLessons;
 use App\Filament\Resources\LessonResource\RelationManagers;
+use App\Models\CourseSkillTitle;
 use App\Models\Lesson;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn\TextColumnSize;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,7 +34,7 @@ class LessonResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('course_skill_title_id')
-                    ->relationship('courseSkillTitle', 'id'),
+                    ->relationship('courseSkillTitle', 'course_title'),
                 Forms\Components\TextInput::make('lesson_title')
                     ->required()
                     ->maxLength(100),
@@ -41,31 +46,37 @@ class LessonResource extends Resource
         return $table
             ->groups([
                 Group::make('courseSkillTitle.course_title')
-                    ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Group::make('lesson_title')
-                    ->collapsible()
                     ->titlePrefixedWithLabel(false),
-            ])->defaultGroup('courseSkillTitle.course_title')
+            ])->defaultGroup('courseSkillTitle.course_title')->groupsInDropdownOnDesktop()
             ->columns([
-                Tables\Columns\TextColumn::make('courseSkillTitle.course_title')
-                    ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('lesson_title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('videos.video_title')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('activities.activity_title')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('exercises.exercise_title')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('summativeAssesments.summative_assesment_title')
-                    ->searchable()
-                    ->sortable(),
+                Stack::make([
+                    Tables\Columns\TextColumn::make('lesson_title')
+                        ->size(TextColumnSize::Medium)
+                        ->weight(FontWeight::Bold)
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('videos.video_title')
+                        ->label('')
+                        ->listWithLineBreaks()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('activities.activity_title')
+                        ->label('')
+                        ->listWithLineBreaks()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('exercises.exercise_title')
+                        ->label('')
+                        ->size(TextColumnSize::Medium)
+                        ->weight(FontWeight::Bold)
+                        ->listWithLineBreaks()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('summativeAssesments.summative_assesment_title')
+                        ->label('')
+                        ->size(TextColumnSize::Medium)
+                        ->weight(FontWeight::Bold)
+                        ->listWithLineBreaks()
+                        ->searchable(),
+                ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
