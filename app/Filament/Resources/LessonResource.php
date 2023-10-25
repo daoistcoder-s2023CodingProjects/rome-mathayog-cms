@@ -8,6 +8,8 @@ use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Models\CourseSkillTitle;
 use App\Models\Lesson;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
@@ -33,11 +35,55 @@ class LessonResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('course_skill_title_id')
-                    ->relationship('courseSkillTitle', 'course_title'),
-                Forms\Components\TextInput::make('lesson_title')
-                    ->required()
-                    ->maxLength(100),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\Select::make('course_skill_title_id')
+                                    ->label('Course Title')
+                                    ->options(CourseSkillTitle::query()->pluck('course_title', 'id')),
+
+                                Forms\Components\TextInput::make('lesson_title')
+                                    ->maxLength(255),
+
+                            ])->columns([
+                                'sm' => 2,
+                            ]),
+
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\Placeholder::make('Lesson Content'),
+
+                                Forms\Components\Repeater::make('videos')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('video')
+                                    ])
+                                    ->defaultItems(1),
+
+                                Forms\Components\Repeater::make('activities')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('activity')
+                                    ])
+                                    ->defaultItems(1),
+
+                                Forms\Components\Repeater::make('exercises')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('exercise')
+                                    ])
+                                    ->defaultItems(1),
+
+                                Forms\Components\Repeater::make('summativeAssesments')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('summative_assesment')
+                                    ])
+                                    ->defaultItems(1),
+                            ])->columnSpan('full')
+                    ]),
+
             ]);
     }
 

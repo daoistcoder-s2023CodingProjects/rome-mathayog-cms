@@ -72,6 +72,7 @@ class SumQuestionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sumChoices.choice_text')
                     ->label('Choices')
+                    ->badge()
                     ->searchable(),
             ])
             ->filters([
