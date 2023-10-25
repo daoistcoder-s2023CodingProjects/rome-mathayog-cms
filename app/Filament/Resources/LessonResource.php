@@ -57,29 +57,41 @@ class LessonResource extends Resource
                                 Forms\Components\Repeater::make('videos')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('video')
-                                    ])
+                                        Forms\Components\TextInput::make('video_title')
+                                        ->maxLength(255),
+                                        Forms\Components\TextInput::make('video_description')
+                                        ->maxLength(255),
+                                        Forms\Components\TextInput::make('video_url')
+                                        ->maxLength(255),
+                                    ])->collapsed()
+                                    ->itemLabel(fn (array $state): ?string => $state['video_title'] ?? null)
                                     ->defaultItems(1),
 
                                 Forms\Components\Repeater::make('activities')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('activity')
+                                        Forms\Components\TextInput::make('activity_title')
                                     ])
+                                    ->collapsed()
+                                    ->itemLabel(fn (array $state): ?string => $state['activity_title'] ?? null)
                                     ->defaultItems(1),
 
                                 Forms\Components\Repeater::make('exercises')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('exercise')
+                                        Forms\Components\TextInput::make('exercise_title')
                                     ])
+                                    ->collapsed()
+                                    ->itemLabel(fn (array $state): ?string => $state['exercise_title'] ?? null)
                                     ->defaultItems(1),
 
                                 Forms\Components\Repeater::make('summativeAssesments')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('summative_assesment')
+                                        Forms\Components\TextInput::make('summative_assesmen_title')
                                     ])
+                                    ->collapsed()
+                                    ->itemLabel(fn (array $state): ?string => $state['summative_assesmen_title'] ?? null)
                                     ->defaultItems(1),
                             ])->columnSpan('full')
                     ]),
