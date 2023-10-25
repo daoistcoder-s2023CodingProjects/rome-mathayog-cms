@@ -18,6 +18,6 @@ class ExeChoice extends Model
 
     public function exeFeedback(): HasOne
     {
-        return $this->hasOne(ActFeedback::class);
+        return $this->hasOne(ExeFeedback::class);
     }
 }
