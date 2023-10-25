@@ -61,11 +61,9 @@ class ActQuestionResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('activity.activity_title')
+                    ->description(fn (ActQuestion $record): string => $record->activity->solo_framework)
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('activity.solo_framework')
-                    ->label('Solo Framework')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('activity_question')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('question_type')

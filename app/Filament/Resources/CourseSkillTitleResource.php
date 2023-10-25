@@ -30,11 +30,14 @@ class CourseSkillTitleResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('sub_topic_id')
-                    ->relationship('subTopic', 'id'),
-                Forms\Components\TextInput::make('skill_name')
-                    ->maxLength(255),
+                    ->options(SubTopic::query()->pluck('sub_topic_title', 'id'))
+                    ->required()
+                    ->reactive(),
                 Forms\Components\TextInput::make('course_title')
                     ->maxLength(255),
+                Forms\Components\TextInput::make('skill_name')
+                    ->maxLength(255),
+
             ]);
     }
 
@@ -57,7 +60,6 @@ class CourseSkillTitleResource extends Resource
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Group::make('subTopic.sub_topic_title')
-                    ->getDescriptionFromRecordUsing(fn (SubTopic $record): string => $record->id->getDescription())
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
             ])->defaultGroup('subTopic.topic.level.level')

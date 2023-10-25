@@ -6,6 +6,7 @@ use App\Filament\Resources\VideoResource\Pages;
 use App\Filament\Resources\VideoResource\RelationManagers;
 use App\Models\Video;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,18 +27,18 @@ class VideoResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('lesson_id')
-                    ->relationship('lesson', 'id'),
+                    ->relationship('lesson', 'lesson_title')
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('video_title')
                     ->required()
                     ->maxLength(100),
-                Forms\Components\Textarea::make('video_url')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
+                FileUpload::make('video_url')
+                    ->label('Video'),
                 Forms\Components\Textarea::make('video_description')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
+
             ]);
     }
 
@@ -49,6 +50,12 @@ class VideoResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('video_title')
+                    ->description(fn (Video $record): string => $record->video_description)
+                    ->searchable(),
+                Tables\Columns\ImageColumn::make('video_url')
+                    ->label('Video')
+                    ->width(100)
+                    ->height('auto')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -74,14 +81,14 @@ class VideoResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -89,5 +96,5 @@ class VideoResource extends Resource
             'create' => Pages\CreateVideo::route('/create'),
             'edit' => Pages\EditVideo::route('/{record}/edit'),
         ];
-    }    
+    }
 }
