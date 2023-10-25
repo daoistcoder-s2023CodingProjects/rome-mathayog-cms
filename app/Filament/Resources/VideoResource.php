@@ -20,7 +20,7 @@ class VideoResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Contents';
 
     public static function form(Form $form): Form
     {

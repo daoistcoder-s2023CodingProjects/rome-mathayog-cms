@@ -29,7 +29,7 @@ class LessonResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Course Content';
+    protected static ?string $navigationLabel = 'Courses';
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
@@ -66,7 +66,7 @@ class LessonResource extends Resource
                                             ->maxLength(255),
                                         Forms\Components\FileUpload::make('video_url')
                                             ->label('Video')
-                                            ->imagePreviewHeight('250'),
+                                            ->imagePreviewHeight('50'),
                                     ])
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Video')
@@ -155,7 +155,6 @@ class LessonResource extends Resource
                                                                     )
                                                                     ->collapsed()
                                                                     ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
-                                                                    ->minItems(2)
                                                                     ->maxItems(4)
                                                                     ->defaultItems(1),
                                                             ]),

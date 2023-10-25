@@ -21,9 +21,9 @@ class ActQuestionResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationLabel = 'Activities';
+    protected static ?string $navigationGroup = 'Contents';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Activities';
 
     public static function form(Form $form): Form
     {

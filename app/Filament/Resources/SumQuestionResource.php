@@ -20,9 +20,9 @@ class SumQuestionResource extends Resource
 
     protected static ?int $navigationSort = 6;
 
-    protected static ?string $navigationLabel = 'Summative Assesment';
+    protected static ?string $navigationGroup = 'Contents';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Summative Assesment';
 
     public static function form(Form $form): Form
     {

@@ -17,12 +17,20 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationGroup;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Contents')
+                    ->icon('heroicon-o-pencil')
+                    ->collapsed(),
+            ])
+            ->sidebarFullyCollapsibleOnDesktop()
             ->default()
             ->id('admin')
             ->path('admin')
@@ -46,8 +54,7 @@ class AdminPanelProvider extends PanelProvider
                 StartSession::class,
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
-                VerifyCsrfToken::class
-                ,
+                VerifyCsrfToken::class,
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
