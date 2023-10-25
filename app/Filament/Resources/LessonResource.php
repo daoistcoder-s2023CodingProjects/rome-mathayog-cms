@@ -10,6 +10,7 @@ use App\Models\Lesson;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -56,35 +57,159 @@ class LessonResource extends Resource
                                 Forms\Components\Placeholder::make('Lesson Content'),
 
                                 Forms\Components\Repeater::make('videos')
+                                    ->label('')
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('video_title')
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('video_description')
                                             ->maxLength(255),
-                                        Forms\Components\TextInput::make('video_url')
-                                            ->maxLength(255),
+                                        Forms\Components\FileUpload::make('video_url')
+                                            ->label('Video')
+                                            ->imagePreviewHeight('250'),
                                     ])
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Video')
+                                    )
+                                    ->collapseAllAction(
+                                        fn (Action $action) => $action->label('')
+                                    )
+                                    ->expandAllAction(
+                                        fn (Action $action) => $action->label('')
                                     )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['video_title'] ?? null)
                                     ->defaultItems(1),
 
                                 Forms\Components\Repeater::make('activities')
+                                    ->label('')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('activity_title')
+                                        Forms\Components\TextInput::make('activity_title'),
+                                        Forms\Components\Card::make()
+                                            ->schema([
+                                                Forms\Components\Placeholder::make('Activity Questions'),
+                                                Forms\Components\Repeater::make('actQuestions')
+                                                    ->label('')
+                                                    ->relationship()
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('activity_question')
+                                                            ->default('edit your activity question')
+                                                            ->columnSpan('full')
+                                                            ->maxLength(255),
+                                                        Forms\Components\Select::make('question_type')
+                                                            ->options([
+                                                                'multiple choice' => 'Multiple Choice',
+                                                                'graphic choice' => 'Graphic Choice',
+                                                                'drag and drop' => 'Drag and Drop',
+                                                            ])
+                                                            ->columnSpan(1),
+                                                        Forms\Components\Select::make('learning_tools')
+                                                            ->options([
+                                                                'selection' => 'Multiple Choice',
+                                                                'pencil' => 'Graphic Choice',
+                                                                'calculator' => 'Calculator',
+                                                                'white board' => 'White Board',
+                                                            ])
+                                                            ->columnSpan(1),
+
+                                                        Forms\Components\Card::make()
+                                                            ->schema([
+                                                                Forms\Components\Placeholder::make('Choices'),
+                                                                Forms\Components\Repeater::make('actChoices')
+                                                                    ->label('')
+                                                                    ->relationship()
+                                                                    ->schema([
+                                                                        Forms\Components\TextInput::make('choice_text')
+                                                                            ->columnSpan('full')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\Select::make('correct')
+                                                                            ->options([
+                                                                                'TRUE' => 'True',
+                                                                                'FALSE' => 'False',
+                                                                            ])
+                                                                            ->columnSpan(1),
+                                                                        Section::make()
+                                                                            ->schema([
+                                                                                Forms\Components\Placeholder::make('Feedback'),
+                                                                                Forms\Components\Repeater::make('actFeedback')
+                                                                                    ->label('')
+                                                                                    ->relationship()
+                                                                                    ->schema([
+                                                                                        Forms\Components\TextInput::make('activity_feedback')
+                                                                                            ->label('')
+                                                                                            ->maxLength(255),
+                                                                                    ])
+                                                                                    ->addAction(
+                                                                                        fn (Action $action) => $action->label('Update Feedback')
+                                                                                    )
+                                                                                    ->collapsed()
+                                                                                    ->itemLabel(fn (array $state): ?string => $state['activity_feedback'] ?? null)
+                                                                                    ->maxItems(1)
+                                                                                    ->defaultItems(1),
+                                                                            ]),
+
+                                                                    ])
+                                                                    ->addAction(
+                                                                        fn (Action $action) => $action->label('Add Choices')
+                                                                    )
+                                                                    ->collapsed()
+                                                                    ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
+                                                                    ->minItems(2)
+                                                                    ->maxItems(4)
+                                                                    ->defaultItems(1),
+                                                            ]),
+
+                                                        Forms\Components\Card::make()
+                                                            ->schema([
+                                                                Forms\Components\Placeholder::make('Hints'),
+                                                                Forms\Components\Repeater::make('actHints')
+                                                                    ->label('')
+                                                                    ->relationship()
+                                                                    ->schema([
+                                                                        Forms\Components\TextInput::make('first_hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('second_hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('third_hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('technical_hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('growth_mindset_hint')
+                                                                            ->maxLength(255),
+
+                                                                    ])
+                                                                    ->addAction(
+                                                                        fn (Action $action) => $action->label('Update Hints')
+                                                                    )
+                                                                    ->maxItems(1)
+                                                                    ->defaultItems(1),
+                                                            ]),
+                                                    ])
+                                                    ->addAction(
+                                                        fn (Action $action) => $action->label('Add Question')
+                                                    )
+                                                    ->cloneable()
+                                                    ->collapsed()
+                                                    ->itemLabel(fn (array $state): ?string => $state['activity_question'] ?? null)
+                                                    ->defaultItems(1),
+                                            ]),
                                     ])
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Activity')
+                                    )
+                                    ->collapseAllAction(
+                                        fn (Action $action) => $action->label('')
+                                    )
+                                    ->expandAllAction(
+                                        fn (Action $action) => $action->label('')
                                     )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['activity_title'] ?? null)
                                     ->defaultItems(1),
 
                                 Forms\Components\Repeater::make('exercises')
+                                    ->label('')
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('exercise_title')
@@ -92,17 +217,30 @@ class LessonResource extends Resource
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Exercise')
                                     )
+                                    ->collapseAllAction(
+                                        fn (Action $action) => $action->label('')
+                                    )
+                                    ->expandAllAction(
+                                        fn (Action $action) => $action->label('')
+                                    )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['exercise_title'] ?? null)
                                     ->defaultItems(1),
 
                                 Forms\Components\Repeater::make('summativeAssesments')
+                                    ->label('')
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('summative_assesment_title')
                                     ])
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Summative Assesment')
+                                    )
+                                    ->collapseAllAction(
+                                        fn (Action $action) => $action->label('')
+                                    )
+                                    ->expandAllAction(
+                                        fn (Action $action) => $action->label('')
                                     )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['summative_assesment_title'] ?? null)
@@ -163,6 +301,7 @@ class LessonResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
