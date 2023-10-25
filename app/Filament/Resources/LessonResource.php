@@ -88,10 +88,10 @@ class LessonResource extends Resource
                                 Forms\Components\Repeater::make('summativeAssesments')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('summative_assesmen_title')
+                                        Forms\Components\TextInput::make('summative_assesment_title')
                                     ])
                                     ->collapsed()
-                                    ->itemLabel(fn (array $state): ?string => $state['summative_assesmen_title'] ?? null)
+                                    ->itemLabel(fn (array $state): ?string => $state['summative_assesment_title'] ?? null)
                                     ->defaultItems(1),
                             ])->columnSpan('full')
                     ]),
