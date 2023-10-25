@@ -46,6 +46,7 @@ class CourseSkillTitleResource extends Resource
         return $table
             ->groups([
                 Group::make('subTopic.topic.level.level')
+                    ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => $record->subTopic->topic->level->pisa_framework)
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Group::make('subTopic.topic.level.content_area')

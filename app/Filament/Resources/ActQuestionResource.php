@@ -38,10 +38,12 @@ class ActQuestionResource extends Resource
         return $table
             ->groups([
                 Group::make('activity.lesson.courseSkillTitle.course_title')
+                    ->getDescriptionFromRecordUsing(fn (ActQuestion $record): string => $record->activity->lesson->courseSkillTitle->skill_name)
                     ->label('Course Title')
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Group::make('activity.lesson.lesson_title')
+                    ->getDescriptionFromRecordUsing(fn (ActQuestion $record): string => $record->activity->lesson->courseSkillTitle->course_title)
                     ->label('Lesson Title')
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
@@ -49,7 +51,7 @@ class ActQuestionResource extends Resource
                     ->label('Activity Title')
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
-            ])->defaultGroup('activity.lesson.courseSkillTitle.course_title')
+            ])->defaultGroup('activity.lesson.lesson_title')
             ->columns([
                 Tables\Columns\TextColumn::make('activity.lesson.courseSkillTitle.course_title')
                     ->label('Course Title')
@@ -58,6 +60,7 @@ class ActQuestionResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('activity.lesson.lesson_title')
                     ->label('Lesson Title')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('activity.activity_title')

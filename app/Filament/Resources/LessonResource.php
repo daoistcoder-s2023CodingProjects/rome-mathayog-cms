@@ -8,6 +8,7 @@ use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Models\CourseSkillTitle;
 use App\Models\Lesson;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -58,12 +59,16 @@ class LessonResource extends Resource
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('video_title')
-                                        ->maxLength(255),
+                                            ->maxLength(255),
                                         Forms\Components\TextInput::make('video_description')
-                                        ->maxLength(255),
+                                            ->maxLength(255),
                                         Forms\Components\TextInput::make('video_url')
-                                        ->maxLength(255),
-                                    ])->collapsed()
+                                            ->maxLength(255),
+                                    ])
+                                    ->addAction(
+                                        fn (Action $action) => $action->label('Add Video')
+                                    )
+                                    ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['video_title'] ?? null)
                                     ->defaultItems(1),
 
@@ -72,6 +77,9 @@ class LessonResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('activity_title')
                                     ])
+                                    ->addAction(
+                                        fn (Action $action) => $action->label('Add Activity')
+                                    )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['activity_title'] ?? null)
                                     ->defaultItems(1),
@@ -81,6 +89,9 @@ class LessonResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('exercise_title')
                                     ])
+                                    ->addAction(
+                                        fn (Action $action) => $action->label('Add Exercise')
+                                    )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['exercise_title'] ?? null)
                                     ->defaultItems(1),
@@ -90,6 +101,9 @@ class LessonResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('summative_assesment_title')
                                     ])
+                                    ->addAction(
+                                        fn (Action $action) => $action->label('Add Summative Assesment')
+                                    )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['summative_assesment_title'] ?? null)
                                     ->defaultItems(1),
@@ -104,6 +118,7 @@ class LessonResource extends Resource
         return $table
             ->groups([
                 Group::make('courseSkillTitle.course_title')
+                    ->getDescriptionFromRecordUsing(fn (Lesson $record): string => $record->courseSkillTitle->subTopic->sub_topic_title)
                     ->titlePrefixedWithLabel(false),
                 Group::make('lesson_title')
                     ->titlePrefixedWithLabel(false),
