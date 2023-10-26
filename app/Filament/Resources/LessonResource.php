@@ -23,15 +23,27 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Support\Htmlable;
+
 class LessonResource extends Resource
 {
     protected static ?string $model = Lesson::class;
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Courses';
+    // protected static ?string $navigationLabel = 'Courses';
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    // protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
+    protected static bool $shouldRegisterNavigation = false;
+
+    public static function getRecordTitle(?Model $record): string|null|Htmlable
+    {
+        return $record->lesson_title;
+    }
 
     public static function form(Form $form): Form
     {
@@ -444,17 +456,11 @@ class LessonResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-            ])
+            ->actions([])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
             ]);
     }
 

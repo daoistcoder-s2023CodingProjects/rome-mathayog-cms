@@ -15,6 +15,14 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Support\Htmlable;
+
+use App\Filament\Resources\LessonResource\Pages\CreateLesson;
+use App\Filament\Resources\LessonResource\Pages\EditLesson;
+use App\Filament\Resources\LessonResource\Pages\ListLessons;
 class CourseSkillTitleResource extends Resource
 {
     protected static ?string $model = CourseSkillTitle::class;
@@ -24,6 +32,11 @@ class CourseSkillTitleResource extends Resource
     protected static ?string $navigationLabel = 'Skills Map';
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
+
+    public static function getRecordTitle(?Model $record): string|null|Htmlable
+    {
+        return $record->course_title;
+    }
 
     public static function form(Form $form): Form
     {
@@ -98,6 +111,12 @@ class CourseSkillTitleResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('Manage course content')
+                ->color('success')
+                ->icon('heroicon-m-academic-cap')
+                ->url(fn (CourseSkillTitle $record): string => self::getUrl('lessons.index', [
+                    'parent' => $record->id,
+                ])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -122,6 +141,26 @@ class CourseSkillTitleResource extends Resource
         return [
             'index' => Pages\ListCourseSkillTitles::route('/'),
             'edit' => Pages\EditCourseSkillTitle::route('/{record}/edit'),
+
+              // Lessons 
+              'lessons.index' => ListLessons::route('/{parent}/lessons'),
+              'lessons.create' => CreateLesson::route('/{parent}/lessons/create'),
+              'lessons.edit' => EditLesson::route('/{parent}/lessons/{record}/edit'),
         ];
+    }
+
+    public static function getUrl(string $name = 'index', array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?Model $tenant = null): string
+    {
+        $parameters['tenant'] ??= ($tenant ?? Filament::getTenant());
+
+        $routeBaseName = static::getRouteBaseName(panel: $panel);
+        $routeFullName = "{$routeBaseName}.{$name}";
+        $routePath = Route::getRoutes()->getByName($routeFullName)->uri();
+
+        if (str($routePath)->contains('{parent}')) {
+            $parameters['parent'] ??= (request()->route('parent') ?? request()->input('parent'));
+        }
+
+        return route($routeFullName, $parameters, $isAbsolute);
     }
 }
