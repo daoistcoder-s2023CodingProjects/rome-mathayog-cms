@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('question_type', [
                 'multiple choice',
                 'graphic choice',
+                'fill in the blanks',
                 'drag and drop'
             ])->nullable();
 
