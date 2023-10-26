@@ -53,16 +53,14 @@ class LessonResource extends Resource
                     ->schema([
                         Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\Select::make('course_skill_title_id')
-                                    ->label('Course Title')
-                                    ->options(CourseSkillTitle::query()->pluck('course_title', 'id')),
+                                // Forms\Components\Select::make('course_skill_title_id')
+                                //     ->label('Course Title')
+                                //     ->options(CourseSkillTitle::query()->pluck('course_title', 'id')),
 
                                 Forms\Components\TextInput::make('lesson_title')
                                     ->maxLength(255),
 
-                            ])->columns([
-                                'sm' => 2,
-                            ]),
+                            ])->columnSpan('full'),
 
                         Forms\Components\Card::make()
                             ->schema([
@@ -91,7 +89,7 @@ class LessonResource extends Resource
                                     )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['video_title'] ?? null)
-                                    ->defaultItems(1),
+                                    ->defaultItems(0),
 
                                 Forms\Components\Repeater::make('activities')
                                     ->label('')
@@ -167,7 +165,7 @@ class LessonResource extends Resource
                                                                                     ->collapsed()
                                                                                     ->itemLabel(fn (array $state): ?string => $state['activity_feedback'] ?? null)
                                                                                     ->maxItems(1)
-                                                                                    ->defaultItems(1),
+                                                                                    ->defaultItems(0),
                                                                             ]),
 
                                                                     ])
@@ -177,7 +175,7 @@ class LessonResource extends Resource
                                                                     ->collapsed()
                                                                     ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
                                                                     ->maxItems(4)
-                                                                    ->defaultItems(1),
+                                                                    ->defaultItems(0),
                                                             ]),
 
                                                         Forms\Components\Card::make()
@@ -203,7 +201,7 @@ class LessonResource extends Resource
                                                                         fn (Action $action) => $action->label('Update Hints')
                                                                     )
                                                                     ->maxItems(1)
-                                                                    ->defaultItems(1),
+                                                                    ->defaultItems(0),
                                                             ]),
                                                     ])
                                                     ->addAction(
@@ -212,7 +210,7 @@ class LessonResource extends Resource
                                                     ->cloneable()
                                                     ->collapsed()
                                                     ->itemLabel(fn (array $state): ?string => $state['activity_question'] ?? null)
-                                                    ->defaultItems(1),
+                                                    ->defaultItems(0),
                                             ]),
                                     ])
                                     ->addAction(
@@ -226,7 +224,7 @@ class LessonResource extends Resource
                                     )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['activity_title'] ?? null)
-                                    ->defaultItems(1),
+                                    ->defaultItems(0),
 
                                 Forms\Components\Repeater::make('exercises')
                                     ->label('')
@@ -293,7 +291,7 @@ class LessonResource extends Resource
                                                                                 ->collapsed()
                                                                                 ->itemLabel(fn (array $state): ?string => $state['exercise_feedback'] ?? null)
                                                                                 ->maxItems(1)
-                                                                                ->defaultItems(1),
+                                                                                ->defaultItems(0),
                                                                         ]),
 
                                                                 ])
@@ -303,7 +301,7 @@ class LessonResource extends Resource
                                                                 ->collapsed()
                                                                 ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
                                                                 ->maxItems(4)
-                                                                ->defaultItems(1),
+                                                                ->defaultItems(0),
                                                         ]),
 
                                                 ])
@@ -313,7 +311,7 @@ class LessonResource extends Resource
                                                 ->cloneable()
                                                 ->collapsed()
                                                 ->itemLabel(fn (array $state): ?string => $state['exercise_question'] ?? null)
-                                                ->defaultItems(1),
+                                                ->defaultItems(0),
                                         ]),
                                 ])
                                     ->addAction(
@@ -327,7 +325,7 @@ class LessonResource extends Resource
                                     )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['exercise_title'] ?? null)
-                                    ->defaultItems(1),
+                                    ->defaultItems(0),
 
                                 Forms\Components\Repeater::make('summativeAssesments')
                                     ->label('')
@@ -376,7 +374,7 @@ class LessonResource extends Resource
                                                                 ->collapsed()
                                                                 ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
                                                                 ->maxItems(4)
-                                                                ->defaultItems(1),
+                                                                ->defaultItems(0),
                                                         ]),
 
                                                 ])
@@ -386,7 +384,7 @@ class LessonResource extends Resource
                                                 ->cloneable()
                                                 ->collapsed()
                                                 ->itemLabel(fn (array $state): ?string => $state['summative_assesment_question'] ?? null)
-                                                ->defaultItems(1),
+                                                ->defaultItems(0),
                                         ]),
                                     ])
                                     ->addAction(
@@ -400,9 +398,9 @@ class LessonResource extends Resource
                                     )
                                     ->collapsed()
                                     ->itemLabel(fn (array $state): ?string => $state['summative_assesment_title'] ?? null)
-                                    ->defaultItems(1),
+                                    ->defaultItems(0),
                             ])->columnSpan('full')
-                    ]),
+                    ])->columnSpan('full'),
 
             ]);
     }
@@ -444,14 +442,6 @@ class LessonResource extends Resource
                         ->listWithLineBreaks()
                         ->searchable(),
                 ]),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
