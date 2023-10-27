@@ -124,7 +124,7 @@ class LessonResource extends Resource
                                                             ->options([
                                                                 'multiple choice' => 'Multiple Choice',
                                                                 'graphic choice' => 'Graphic Choice',
-                                                                'fill in the blank' => 'Fill in the Blank',
+                                                                'fill in the blanks' => 'Fill in the Blanks',
                                                                 'drag and drop' => 'Drag and Drop',
                                                             ])
                                                             ->columnSpan(1),
@@ -182,6 +182,8 @@ class LessonResource extends Resource
                                                                     ->addAction(
                                                                         fn (Action $action) => $action->label('Add Choices')
                                                                     )
+                                                                    ->reorderable()
+                                                                    ->cloneable()
                                                                     ->collapsed()
                                                                     ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
                                                                     ->maxItems(4)
