@@ -196,14 +196,19 @@ class LessonResource extends Resource
                                                                     ->relationship()
                                                                     ->schema([
                                                                         Forms\Components\TextInput::make('first_hint')
+                                                                            ->placeholder('add first hint')
                                                                             ->maxLength(255),
                                                                         Forms\Components\TextInput::make('second_hint')
+                                                                            ->placeholder('add second hint')
                                                                             ->maxLength(255),
                                                                         Forms\Components\TextInput::make('third_hint')
+                                                                            ->placeholder('add third hint')
                                                                             ->maxLength(255),
                                                                         Forms\Components\TextInput::make('technical_hint')
+                                                                            ->placeholder('add technical hint')
                                                                             ->maxLength(255),
                                                                         Forms\Components\TextInput::make('growth_mindset_hint')
+                                                                            ->placeholder('add growth mindset hint')
                                                                             ->maxLength(255),
 
                                                                     ])
