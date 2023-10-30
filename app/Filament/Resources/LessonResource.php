@@ -249,6 +249,7 @@ class LessonResource extends Resource
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('exercise_title'),
+                                        Forms\Components\TextInput::make('objective'),
                                         Forms\Components\Card::make()
                                             ->schema([
                                                 Forms\Components\Placeholder::make('Exercise Questions'),
@@ -264,6 +265,7 @@ class LessonResource extends Resource
                                                             ->options([
                                                                 'multiple choice' => 'Multiple Choice',
                                                                 'graphic choice' => 'Graphic Choice',
+                                                                'fill in the blanks' => 'Fill in the Blanks',
                                                                 'drag and drop' => 'Drag and Drop',
                                                             ])
                                                             ->columnSpan(1),
@@ -284,7 +286,11 @@ class LessonResource extends Resource
                                                                     ->relationship()
                                                                     ->schema([
                                                                         Forms\Components\TextInput::make('choice_text')
+                                                                            ->default('input the choice text')
                                                                             ->columnSpan('full')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('choice_graphics')
+                                                                            ->placeholder('image url')
                                                                             ->maxLength(255),
                                                                         Forms\Components\Select::make('correct')
                                                                             ->options([
@@ -300,6 +306,7 @@ class LessonResource extends Resource
                                                                                     ->relationship()
                                                                                     ->schema([
                                                                                         Forms\Components\TextInput::make('exercise_feedback')
+                                                                                            ->default('input new feedback')
                                                                                             ->label('')
                                                                                             ->maxLength(255),
                                                                                     ])
@@ -365,6 +372,7 @@ class LessonResource extends Resource
                                                             ->options([
                                                                 'multiple choice' => 'Multiple Choice',
                                                                 'graphic choice' => 'Graphic Choice',
+                                                                'fill in the blanks' => 'Fill in the Blanks',
                                                                 'drag and drop' => 'Drag and Drop',
                                                             ])
                                                             ->columnSpan(1),
@@ -377,7 +385,11 @@ class LessonResource extends Resource
                                                                     ->relationship()
                                                                     ->schema([
                                                                         Forms\Components\TextInput::make('choice_text')
+                                                                            ->default('input the choice text')
                                                                             ->columnSpan('full')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('choice_graphics')
+                                                                            ->placeholder('image url')
                                                                             ->maxLength(255),
                                                                         Forms\Components\Select::make('correct')
                                                                             ->options([
