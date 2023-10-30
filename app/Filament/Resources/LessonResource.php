@@ -224,6 +224,7 @@ class LessonResource extends Resource
                                                     ->addAction(
                                                         fn (Action $action) => $action->label('Add Question')
                                                     )
+                                                    ->reorderable()
                                                     ->cloneable()
                                                     ->collapsed()
                                                     ->itemLabel(fn (array $state): ?string => $state['activity_question'] ?? null)
