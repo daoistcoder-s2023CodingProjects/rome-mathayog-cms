@@ -261,6 +261,10 @@ class LessonResource extends Resource
                                                             ->default('edit your exercise question')
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
+                                                        Forms\Components\TextInput::make('question_graphics')
+                                                            ->placeholder('image url')
+                                                            ->columnSpan('full')
+                                                            ->maxLength(255),
                                                         Forms\Components\Select::make('question_type')
                                                             ->options([
                                                                 'multiple choice' => 'Multiple Choice',
@@ -323,6 +327,8 @@ class LessonResource extends Resource
                                                                     ->addAction(
                                                                         fn (Action $action) => $action->label('Add Choices')
                                                                     )
+                                                                    ->reorderable()
+                                                                    ->cloneable()
                                                                     ->collapsed()
                                                                     ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
                                                                     ->maxItems(4)
@@ -333,6 +339,7 @@ class LessonResource extends Resource
                                                     ->addAction(
                                                         fn (Action $action) => $action->label('Add Question')
                                                     )
+                                                    ->reorderable()
                                                     ->cloneable()
                                                     ->collapsed()
                                                     ->itemLabel(fn (array $state): ?string => $state['exercise_question'] ?? null)
@@ -357,6 +364,8 @@ class LessonResource extends Resource
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('summative_assesment_title'),
+                                        Forms\Components\TextInput::make('description'),
+                                        Forms\Components\TextInput::make('level_id'),
                                         Forms\Components\Card::make()
                                             ->schema([
                                                 Forms\Components\Placeholder::make('Summative Questions'),
@@ -366,6 +375,10 @@ class LessonResource extends Resource
                                                     ->schema([
                                                         Forms\Components\TextInput::make('summative_assesment_question')
                                                             ->default('edit your summative question')
+                                                            ->columnSpan('full')
+                                                            ->maxLength(255),
+                                                        Forms\Components\TextInput::make('question_graphics')
+                                                            ->placeholder('image url')
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
                                                         Forms\Components\Select::make('question_type')
@@ -401,6 +414,8 @@ class LessonResource extends Resource
                                                                     ->addAction(
                                                                         fn (Action $action) => $action->label('Add Choices')
                                                                     )
+                                                                    ->reorderable()
+                                                                    ->cloneable()
                                                                     ->collapsed()
                                                                     ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
                                                                     ->maxItems(4)
