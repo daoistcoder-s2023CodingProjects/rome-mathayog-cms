@@ -96,7 +96,7 @@ class CourseSkillTitleResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('course_title')
-                    ->description(fn (CourseSkillTitle $record): string => $record->skill_name)
+                    // ->description(fn (CourseSkillTitle $record): string => $record->skill_name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
