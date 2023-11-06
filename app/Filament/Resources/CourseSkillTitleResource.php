@@ -58,10 +58,10 @@ class CourseSkillTitleResource extends Resource
     {
         return $table
             ->groups([
-                Group::make('subTopic.topic.level.level')
-                    ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => $record->subTopic->topic->level->pisa_framework)
-                    ->collapsible()
-                    ->titlePrefixedWithLabel(false),
+                // Group::make('subTopic.topic.level.level')
+                //     ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => $record->subTopic->topic->level->pisa_framework)
+                //     ->collapsible()
+                //     ->titlePrefixedWithLabel(false),
                 Group::make('subTopic.topic.level.content_area')
                     ->collapsible()
                     ->label('Content Area')
@@ -76,7 +76,7 @@ class CourseSkillTitleResource extends Resource
                 Group::make('subTopic.sub_topic_title')
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
-            ])->defaultGroup('subTopic.topic.level.level')
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('subTopic.topic.level.level')
                     ->toggleable(isToggledHiddenByDefault: true)
