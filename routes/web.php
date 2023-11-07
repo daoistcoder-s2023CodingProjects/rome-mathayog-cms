@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/admin');
 
 // Display all data initially
 Route::get('/welcome', [DataByLevelController::class, 'displayAllData'])->name('welcome');
