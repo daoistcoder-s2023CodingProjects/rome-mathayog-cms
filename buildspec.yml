@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      php: 8.1 
+      php: 8.1
     commands:
       - apt-get update -y
       - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -15,10 +15,13 @@ phases:
     commands:
       - composer install
       - npm install
-artifacts:
-  files:
-    - '**/*'
-  name: $(date +%Y-%m-%dT%H:%M:%S).zip
-proxy:
-  upload-artifacts: yes
-  logs: yes
+  build:
+    commands:
+      - npm run dev
+  artifacts:
+    files:
+      - '**/*'
+    name: $(date +%Y-%m-%dT%H:%M:%S).zip
+  proxy:
+    upload-artifacts: yes
+    logs: yes
