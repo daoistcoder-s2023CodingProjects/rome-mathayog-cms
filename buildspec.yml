@@ -1,5 +1,4 @@
 version: 0.2
-
 phases:
   install:
     runtime-versions:
@@ -11,21 +10,15 @@ phases:
       - apt-get install -y php-pgsql
       - curl -sS https://getcomposer.org/installer -o composer-setup.php 
       - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-      - npm install -g create-vite
   pre_build:
     commands:
       - composer install
       - npm install
-  build:
-    commands:
       - npm run dev
-  artifacts:
-    files:
-      - '**/*'
-    name: $(date +%Y-%m-%dT%H:%M:%S).zip
-  post_build:
-    commands:
-      # Any post-build commands you might need
-  proxy:
-    upload-artifacts: yes
-    logs: yes
+artifacts:
+  files:
+    - '**/*'
+  name: $(date +%Y-%m-%dT%H:%M:%S).zip
+proxy:
+  upload-artifacts: yes
+  logs: yes
