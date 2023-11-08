@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      php: 8.1
+      php: 8.1 
     commands:
       - apt-get update -y
       - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -11,6 +11,7 @@ phases:
       - apt-get install -y php-pgsql
       - curl -sS https://getcomposer.org/installer -o composer-setup.php 
       - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+      - npm install -g create-vite
   pre_build:
     commands:
       - composer install
@@ -22,6 +23,9 @@ phases:
     files:
       - '**/*'
     name: $(date +%Y-%m-%dT%H:%M:%S).zip
+  post_build:
+    commands:
+      # Any post-build commands you might need
   proxy:
     upload-artifacts: yes
     logs: yes
