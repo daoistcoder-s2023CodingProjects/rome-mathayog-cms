@@ -33,7 +33,10 @@ class VideoResource extends Resource
                     ->required()
                     ->maxLength(100),
                 FileUpload::make('video_url')
-                    ->label('Video'),
+                    ->label('Video')
+                    ->disk('s3')
+                    ->directory('videos')
+                    ->visibility('public'),
                 Forms\Components\Textarea::make('video_description')
                     ->required()
                     ->maxLength(65535)
