@@ -36,6 +36,8 @@ class VideoResource extends Resource
                     ->label('Video')
                     ->disk('s3')
                     ->directory('videos')
+                    ->preserveFilenames()
+                    ->maxSize(20000)
                     ->visibility('public'),
                 Forms\Components\Textarea::make('video_description')
                     ->required()
