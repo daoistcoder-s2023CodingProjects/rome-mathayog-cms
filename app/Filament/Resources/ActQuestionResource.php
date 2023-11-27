@@ -124,6 +124,7 @@ class ActQuestionResource extends Resource
                             ->reorderable()
                             ->cloneable()
                             ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
+                            ->collapsible()
                             ->maxItems(4)
                             ->defaultItems(0),
                     ]),
@@ -180,6 +181,7 @@ class ActQuestionResource extends Resource
                 Group::make('activity_id')
                     ->label('Activity Title')
                     ->getDescriptionFromRecordUsing(fn (ActQuestion $record): string => $record->activity->activity_title)
+                    ->getTitleFromRecordUsing(fn (ActQuestion $record): string => $record->activity->lesson->courseSkillTitle->course_title)
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
             ])->defaultGroup('activity_id')
