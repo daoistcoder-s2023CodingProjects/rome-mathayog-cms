@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ActQuestion extends Model
 {
@@ -24,5 +25,11 @@ class ActQuestion extends Model
     public function actHints(): HasMany
     {
         return $this->hasMany(ActHint::class);
+    }
+
+    // hasOne Fil-ActQuestion
+    public function filActQuestion(): HasOne
+    {
+        return $this->hasOne(FilActQuestion::class, 'id');
     }
 }

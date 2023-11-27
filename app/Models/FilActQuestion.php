@@ -25,4 +25,10 @@ class FilActQuestion extends Model
     {
         return $this->hasMany(FilActHint::class);
     }
+
+    // belongsTo ActQuestion
+    public function actQuestion(): BelongsTo
+    {
+        return $this->belongsTo(ActQuestion::class);
+    }
 }

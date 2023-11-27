@@ -2,29 +2,38 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ActQuestionResource\Pages;
-use App\Filament\Resources\ActQuestionResource\RelationManagers;
-use App\Models\ActQuestion;
-use App\Models\Lesson;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Actions\Action;
 
 use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 
-use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\Alignment;
 
-use Filament\Tables\Grouping\Group;
-use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Resources\ActQuestionResource\Pages;
+use App\Filament\Resources\ActQuestionResource\RelationManagers;
+
+use App\Models\ActQuestion;
+use App\Models\ActChoice;
+use App\Models\ActFeedback;
+use App\Models\ActHint;
+use App\Models\FilActQuestion;
+use App\Models\FilActChoice;
+use App\Models\FilActFeedback;
+use App\Models\FilActHint;
+use App\Models\Lesson;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Database\Eloquent\Model;
 
 class ActQuestionResource extends Resource
 {
@@ -49,6 +58,24 @@ class ActQuestionResource extends Resource
                     ->required()
                     ->maxLength(100)
                     ->columnSpanFull(),
+                Forms\Components\Repeater::make('filActQuestion')
+                    ->label('Fil-Activity question')
+                    ->relationship()
+                    ->schema([
+                        Forms\Components\TextInput::make('activity_question')
+                            ->default('add filipino translation')
+                            ->label('')
+                            ->maxLength(255),
+                    ])
+                    ->addAction(
+                        fn (Action $action) => $action->label('Update Fil-translation')
+                    )
+                    ->collapsed()
+                    ->itemLabel(fn (array $state): ?string => $state['activity_question'] ?? null)
+                    ->maxItems(1)
+                    ->defaultItems(0)
+                    ->columnSpanFull(),
+
                 FileUpload::make('question_graphics')
                     ->label('Question Img')
                     ->image()
