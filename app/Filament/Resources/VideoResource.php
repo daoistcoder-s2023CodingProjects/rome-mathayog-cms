@@ -56,11 +56,8 @@ class VideoResource extends Resource
                 Tables\Columns\TextColumn::make('video_title')
                     ->description(fn (Video $record): string => $record->video_description)
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('video_url')
-                    ->label('Video')
-                    ->width(100)
-                    ->height('auto')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('video_url')
+                    ->label('Video URL'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
