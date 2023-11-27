@@ -186,8 +186,8 @@ class ActQuestionResource extends Resource
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Group::make('activity_id')
-                    ->label('Activity Title')
-                    ->getDescriptionFromRecordUsing(fn (ActQuestion $record): string => $record->activity->activity_title)
+                    ->label('Activity')
+                    ->getDescriptionFromRecordUsing(fn (ActQuestion $record): string =>  $record->activity->lesson->lesson_title . ' - ' . $record->activity->activity_title)
                     ->getTitleFromRecordUsing(fn (ActQuestion $record): string => $record->activity->lesson->courseSkillTitle->course_title)
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
