@@ -12,7 +12,14 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+
 use Filament\Tables;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\FontWeight;
+
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -186,46 +193,66 @@ class ActQuestionResource extends Resource
                     ->titlePrefixedWithLabel(false),
             ])->defaultGroup('activity_id')
             ->columns([
-                Tables\Columns\TextColumn::make('activity.lesson.courseSkillTitle.course_title')
-                    ->label('Course Title')
-                    ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('activity.lesson.lesson_title')
-                    ->label('Lesson Title')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('activity.activity_title')
-                    ->description(fn (ActQuestion $record): string => $record->activity->solo_framework)
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('activity_question')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('question_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('learning_tools')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('actChoices.choice_text')
-                    ->label('Choices')
-                    ->badge()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('actChoices.actFeedback.activity_feedback')
-                    ->label('Feedbacks')
-                    ->badge()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('actHints.first_hint')
-                    ->label('Hint')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('actHints.technical_hint')
-                    ->label('Technical Hint')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('actHints.growth_mindset_hint')
-                    ->label('Growth mindset Hint')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Split & Stack Columns
+                Stack::make([
+                    Tables\Columns\TextColumn::make('activity_question')
+                        ->searchable()
+                        ->grow(true)
+                        ->weight(FontWeight::Bold),
+                    Split::make([
+                        Stack::make([
+                            // -put column here
+                            Tables\Columns\TextColumn::make('question_type')
+                                ->badge()
+                                ->searchable(),
+                            Tables\Columns\TextColumn::make('learning_tools')
+                                ->badge()
+                                ->searchable(),
+                        ]),
+                        Split::make([
+                            // -put column here
+                            Tables\Columns\TextColumn::make('actChoices.choice_text')
+                                ->label('Choices')
+                                ->badge()
+                                ->color('warning')
+                                ->searchable()
+                                ->grow(false),
+                            Tables\Columns\TextColumn::make('actChoices.actFeedback.activity_feedback')
+                                ->label('Feedbacks')
+                                ->badge()
+                                ->color('gray')
+                                ->searchable(),
+                        ]),
+
+                        Stack::make([
+                            Tables\Columns\TextColumn::make('actHints.first_hint')
+                                ->label('Hint 1')
+                                ->badge()
+                                ->color('gray')
+                                ->searchable(),
+                            Tables\Columns\TextColumn::make('actHints.second_hint')
+                                ->label('Hint 2')
+                                ->badge()
+                                ->color('gray')
+                                ->searchable(),
+                            Tables\Columns\TextColumn::make('actHints.third_hint')
+                                ->label('Hint 3')
+                                ->badge()
+                                ->color('gray')
+                                ->searchable(),
+                            Tables\Columns\TextColumn::make('actHints.technical_hint')
+                                ->label('Technical Hint')
+                                ->searchable()
+                                ->toggleable(isToggledHiddenByDefault: true),
+                            Tables\Columns\TextColumn::make('actHints.growth_mindset_hint')
+                                ->label('Growth mindset Hint')
+                                ->searchable()
+                                ->toggleable(isToggledHiddenByDefault: true),
+                        ]),
+
+                    ]),
+                ]),
+
             ])
             ->filters([
                 //
