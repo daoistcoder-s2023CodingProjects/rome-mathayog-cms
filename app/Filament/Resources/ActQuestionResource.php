@@ -177,11 +177,12 @@ class ActQuestionResource extends Resource
                     ->label('Lesson Title')
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
-                Group::make('activity.activity_title')
+                Group::make('activity_id')
                     ->label('Activity Title')
+                    ->getDescriptionFromRecordUsing(fn (ActQuestion $record): string => $record->activity->activity_title)
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
-            ])->defaultGroup('activity.lesson.lesson_title')
+            ])->defaultGroup('activity_id')
             ->columns([
                 Tables\Columns\TextColumn::make('activity.lesson.courseSkillTitle.course_title')
                     ->label('Course Title')
@@ -196,7 +197,8 @@ class ActQuestionResource extends Resource
                 Tables\Columns\TextColumn::make('activity.activity_title')
                     ->description(fn (ActQuestion $record): string => $record->activity->solo_framework)
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('activity_question')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('question_type')
@@ -216,10 +218,12 @@ class ActQuestionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actHints.technical_hint')
                     ->label('Technical Hint')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('actHints.growth_mindset_hint')
                     ->label('Growth mindset Hint')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
