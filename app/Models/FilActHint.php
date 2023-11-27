@@ -14,4 +14,9 @@ class FilActHint extends Model
     {
         return $this->belongsTo(FilActQuestion::class);
     }
+
+    public function actHint(): BelongsTo
+    {
+        return $this->belongsTo(ActHint::class);
+    }
 }

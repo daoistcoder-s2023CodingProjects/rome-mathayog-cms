@@ -56,7 +56,7 @@ class ActQuestionResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('activity_question')
                     ->required()
-                    ->maxLength(100)
+                    ->maxLength(255)
                     ->columnSpanFull(),
                 Forms\Components\Repeater::make('filActQuestion')
                     ->label('Fil-Activity question')
@@ -168,7 +168,7 @@ class ActQuestionResource extends Resource
                                     ->maxItems(1)
                                     ->defaultItems(0)
                                     ->columnSpan(3),
-                                
+
                                 Forms\Components\Repeater::make('filActFeedback') //Fil-ActFeedback
                                     ->label('Fil-feedback')
                                     ->relationship()
@@ -201,38 +201,72 @@ class ActQuestionResource extends Resource
                             ->defaultItems(0),
                     ]),
 
-                Section::make()
+                // ActHint
+                Forms\Components\Repeater::make('actHints')
+                    ->label('Hints')
+                    ->relationship()
                     ->schema([
-                        Forms\Components\Placeholder::make('Hints'),
-                        Forms\Components\Repeater::make('actHints')
-                            ->label('')
+                        Forms\Components\TextInput::make('first_hint')
+                            ->placeholder('add first hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('second_hint')
+                            ->placeholder('add second hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('third_hint')
+                            ->placeholder('add third hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('technical_hint')
+                            ->placeholder('add technical hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('growth_mindset_hint')
+                            ->placeholder('add growth mindset hint')
+                            ->maxLength(255),
+
+                        Forms\Components\Repeater::make('filActHint')
+                            ->label('Fil-hints')
                             ->relationship()
                             ->schema([
                                 Forms\Components\TextInput::make('first_hint')
+                                    ->label('Fil-first hint')
                                     ->placeholder('add first hint')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('second_hint')
+                                    ->label('Fil-second hint')
                                     ->placeholder('add second hint')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('third_hint')
+                                    ->label('Fil-third hint')
                                     ->placeholder('add third hint')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('technical_hint')
+                                    ->label('Fil-technical hint')
                                     ->placeholder('add technical hint')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('growth_mindset_hint')
+                                    ->label('Fil-growth mindset hint')
                                     ->placeholder('add growth mindset hint')
                                     ->maxLength(255),
 
                             ])
                             ->addAction(
-                                fn (Action $action) => $action->label('Update Hints')
+                                fn (Action $action) => $action->label('Update Fil-hints')
                             )
                             ->maxItems(1)
-                            ->collapsed()
+                            ->collapsible()
                             ->itemLabel(fn (array $state): ?string => $state['first_hint'] ?? null)
-                            ->defaultItems(0),
-                    ]),
+                            ->defaultItems(0)
+                            ->columnSpanFull(),
+
+                    ])
+                    ->addAction(
+                        fn (Action $action) => $action->label('Update Eng-hints')
+                    )
+                    ->maxItems(1)
+                    ->collapsible()
+                    ->itemLabel(fn (array $state): ?string => $state['first_hint'] ?? null)
+                    ->defaultItems(0)
+                    ->columnSpanFull(),
+
             ]);
     }
 
@@ -308,10 +342,14 @@ class ActQuestionResource extends Resource
                             Tables\Columns\TextColumn::make('actHints.technical_hint')
                                 ->label('Technical Hint')
                                 ->searchable()
+                                ->badge()
+                                ->color('gray')
                                 ->toggleable(isToggledHiddenByDefault: true),
                             Tables\Columns\TextColumn::make('actHints.growth_mindset_hint')
                                 ->label('Growth mindset Hint')
                                 ->searchable()
+                                ->badge()
+                                ->color('gray')
                                 ->toggleable(isToggledHiddenByDefault: true),
                         ]),
 
