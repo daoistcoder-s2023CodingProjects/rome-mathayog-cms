@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class ActQuestion extends Model
+class FilActQuestion extends Model
 {
     use HasFactory;
 
@@ -16,13 +16,13 @@ class ActQuestion extends Model
         return $this->belongsTo(Activity::class);
     }
 
-    public function actChoices(): HasMany
+    public function filActChoices(): HasMany
     {
-        return $this->hasMany(ActChoice::class);
+        return $this->hasMany(FilActChoice::class);
     }
     
-    public function actHints(): HasMany
+    public function filActHints(): HasMany
     {
-        return $this->hasMany(ActHint::class);
+        return $this->hasMany(FilActHint::class);
     }
 }

@@ -20,4 +20,10 @@ class Activity extends Model
     {
         return $this->hasMany(ActQuestion::class);
     }
+
+    // hasMany filActQuestions
+    public function filActQuestions(): HasMany
+    {
+        return $this->hasMany(FilActQuestion::class);
+    }
 }
