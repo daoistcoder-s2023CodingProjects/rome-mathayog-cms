@@ -21,4 +21,15 @@ class ActChoice extends Model
         return $this->hasOne(ActFeedback::class);
     }
 
+    public function filActChoice(): HasOne
+    {
+        return $this->hasOne(FilActChoice::class, 'id');
+    }
+
+    public function filActFeedback(): HasOne
+    {
+        return $this->hasOne(FilActFeedback::class, 'id');
+    }
+
+
 }

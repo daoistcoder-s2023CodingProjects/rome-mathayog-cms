@@ -115,13 +115,33 @@ class ActQuestionResource extends Resource
                                     ->default('input the choice text')
                                     ->maxLength(255)
                                     ->columnSpan(1),
+                                // Fil-ActChoice
+                                Forms\Components\Repeater::make('filActChoice')
+                                    ->label('Fil-Choice')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('choice_text')
+                                            ->default('add filipino translation')
+                                            ->label('')
+                                            ->maxLength(255),
+                                    ])
+                                    ->addAction(
+                                        fn (Action $action) => $action->label('Update Fil-translation')
+                                    )
+                                    ->collapsed()
+                                    ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
+                                    ->maxItems(1)
+                                    ->defaultItems(0)
+                                    ->columnSpan(1),
+
                                 Forms\Components\Select::make('correct')
                                     ->options([
                                         'TRUE' => 'True',
                                         'FALSE' => 'False',
                                     ])
                                     ->columnSpan(1),
-                                FileUpload::make('choice_graphics')
+
+                                FileUpload::make('choice_graphics') //ChoiceGraphics
                                     ->label('choice Img')
                                     ->image()
                                     ->imagePreviewHeight('250')
@@ -129,30 +149,46 @@ class ActQuestionResource extends Resource
                                     ->disk('s3')
                                     ->directory('act_choice_img')
                                     ->visibility('public')
-                                    ->columnSpan(2),
-                                Section::make()
+                                    ->columnSpan(3),
+
+                                Forms\Components\Repeater::make('actFeedback') //ActFeedback
+                                    ->label('Eng-feedback')
+                                    ->relationship()
                                     ->schema([
-                                        Forms\Components\Placeholder::make('Feedback'),
-                                        Forms\Components\Repeater::make('actFeedback')
+                                        Forms\Components\TextInput::make('activity_feedback')
+                                            ->default('update english feedback')
                                             ->label('')
-                                            ->relationship()
-                                            ->schema([
-                                                Forms\Components\TextInput::make('activity_feedback')
-                                                    ->default('input new feedback')
-                                                    ->label('')
-                                                    ->maxLength(255),
-                                            ])
-                                            ->addAction(
-                                                fn (Action $action) => $action->label('Update Feedback')
-                                            )
-                                            ->collapsed()
-                                            ->itemLabel(fn (array $state): ?string => $state['activity_feedback'] ?? null)
-                                            ->maxItems(1)
-                                            ->defaultItems(0),
-                                    ]),
+                                            ->maxLength(255),
+                                    ])
+                                    ->addAction(
+                                        fn (Action $action) => $action->label('Update Eng-feedback')
+                                    )
+                                    ->collapsed()
+                                    ->itemLabel(fn (array $state): ?string => $state['activity_feedback'] ?? null)
+                                    ->maxItems(1)
+                                    ->defaultItems(0)
+                                    ->columnSpan(3),
+                                
+                                Forms\Components\Repeater::make('filActFeedback') //Fil-ActFeedback
+                                    ->label('Fil-feedback')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('activity_feedback')
+                                            ->default('update filipino feedback')
+                                            ->label('')
+                                            ->maxLength(255),
+                                    ])
+                                    ->addAction(
+                                        fn (Action $action) => $action->label('Update Fil-feedback')
+                                    )
+                                    ->collapsed()
+                                    ->itemLabel(fn (array $state): ?string => $state['activity_feedback'] ?? null)
+                                    ->maxItems(1)
+                                    ->defaultItems(0)
+                                    ->columnSpan(3),
 
                             ])
-                            ->columns(2)
+                            ->columns(3)
                             ->grid(2)
                             ->addAction(
                                 fn (Action $action) => $action->label('Add Choices')

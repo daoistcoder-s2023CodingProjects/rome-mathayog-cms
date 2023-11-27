@@ -21,4 +21,9 @@ class FilActChoice extends Model
         return $this->hasOne(FilActFeedback::class);
     }
 
+    public function actChoice(): BelongsTo
+    {
+        return $this->belongsTo(ActChoice::class);
+    }
+
 }

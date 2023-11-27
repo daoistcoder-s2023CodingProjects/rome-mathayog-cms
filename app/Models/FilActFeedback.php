@@ -14,4 +14,9 @@ class FilActFeedback extends Model
     {
         return $this->belongsTo(FilActChoice::class);
     }
+
+    public function actChoice(): BelongsTo
+    {
+        return $this->belongsTo(ActChoice::class);
+    }
 }
