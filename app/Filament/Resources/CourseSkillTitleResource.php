@@ -23,6 +23,9 @@ use Illuminate\Contracts\Support\Htmlable;
 use App\Filament\Resources\LessonResource\Pages\CreateLesson;
 use App\Filament\Resources\LessonResource\Pages\EditLesson;
 use App\Filament\Resources\LessonResource\Pages\ListLessons;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Columns\TextColumn\TextColumnSize;
+
 class CourseSkillTitleResource extends Resource
 {
     protected static ?string $model = CourseSkillTitle::class;
@@ -42,14 +45,15 @@ class CourseSkillTitleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('sub_topic_id')
-                    ->options(SubTopic::query()->pluck('sub_topic_title', 'id'))
-                    ->required()
-                    ->reactive(),
                 Forms\Components\TextInput::make('course_title')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('skill_name')
-                    ->maxLength(255),
+                    ->label('Course Title')
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                Forms\Components\TextArea::make('skill_name')
+                    ->label('Course Skill')
+                    ->rows(5)
+                    ->maxLength(1024)
+                    ->columnSpanFull(),
 
             ]);
     }
@@ -58,25 +62,18 @@ class CourseSkillTitleResource extends Resource
     {
         return $table
             ->groups([
-                // Group::make('subTopic.topic.level.level')
-                //     ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => $record->subTopic->topic->level->pisa_framework)
-                //     ->collapsible()
-                //     ->titlePrefixedWithLabel(false),
-                Group::make('subTopic.topic.level.content_area')
-                    ->collapsible()
-                    ->label('Content Area')
-                    ->titlePrefixedWithLabel(false),
-                Group::make('subTopic.topic.level.pisa_framework')
-                    ->collapsible()
-                    ->label('Pisa Framework')
-                    ->titlePrefixedWithLabel(false),
                 Group::make('subTopic.topic.topic_title')
+                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
+                    ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => 'Sub-topic: ' . $record->subTopic->sub_topic_title)
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Group::make('subTopic.sub_topic_title')
+                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
+                    ->getTitleFromRecordUsing(fn (CourseSkillTitle $record): string => 'Topic: ' . $record->subTopic->topic->topic_title)
+                    ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => 'Sub-topic: ' . $record->subTopic->sub_topic_title)
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
-            ])
+            ])->defaultGroup('subTopic.sub_topic_title')
             ->columns([
                 Tables\Columns\TextColumn::make('subTopic.topic.level.level')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -90,13 +87,16 @@ class CourseSkillTitleResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('subTopic.topic.topic_title')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('subTopic.sub_topic_title')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('course_title')
-                    // ->description(fn (CourseSkillTitle $record): string => $record->skill_name)
+                    ->weight(FontWeight::Bold)
+                    ->description(fn (CourseSkillTitle $record): ?string => 'Course-skill: ' . $record->skill_name ?? 'Course-skill: Add Course Skill')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -112,12 +112,12 @@ class CourseSkillTitleResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('Manage course content')
-                ->color('success')
-                ->icon('heroicon-m-academic-cap')
-                ->url(fn (CourseSkillTitle $record): string => self::getUrl('lessons.index', [
-                    'parent' => $record->id,
-                ])),
-                Tables\Actions\EditAction::make(),
+                    ->color('success')
+                    ->icon('heroicon-m-academic-cap')
+                    ->url(fn (CourseSkillTitle $record): string => self::getUrl('lessons.index', [
+                        'parent' => $record->id,
+                    ])),
+                Tables\Actions\EditAction::make()->slideOver(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -140,12 +140,11 @@ class CourseSkillTitleResource extends Resource
     {
         return [
             'index' => Pages\ListCourseSkillTitles::route('/'),
-            'edit' => Pages\EditCourseSkillTitle::route('/{record}/edit'),
 
-              // Lessons 
-              'lessons.index' => ListLessons::route('/{parent}/lessons'),
-              'lessons.create' => CreateLesson::route('/{parent}/lessons/create'),
-              'lessons.edit' => EditLesson::route('/{parent}/lessons/{record}/edit'),
+            // Lessons 
+            'lessons.index' => ListLessons::route('/{parent}/lessons'),
+            'lessons.create' => CreateLesson::route('/{parent}/lessons/create'),
+            'lessons.edit' => EditLesson::route('/{parent}/lessons/{record}/edit'),
         ];
     }
 

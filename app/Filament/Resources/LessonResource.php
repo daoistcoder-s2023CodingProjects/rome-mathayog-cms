@@ -29,13 +29,12 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class LessonResource extends Resource
 {
+    // variable for place holders and select options
+    const IMAGE_PLACEHOLDER = 'image url';
+
     protected static ?string $model = Lesson::class;
 
     protected static ?int $navigationSort = 2;
-
-    // protected static ?string $navigationLabel = 'Courses';
-
-    // protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -50,12 +49,8 @@ class LessonResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Card::make()
+                        Section::make()
                             ->schema([
-                                // Forms\Components\Select::make('course_skill_title_id')
-                                //     ->label('Course Title')
-                                //     ->options(CourseSkillTitle::query()->pluck('course_title', 'id')),
-
                                 Forms\Components\TextInput::make('lesson_title')
                                     ->maxLength(255),
 
@@ -116,7 +111,7 @@ class LessonResource extends Resource
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
                                                         Forms\Components\TextInput::make('question_graphics')
-                                                            ->placeholder('image url')
+                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
                                                         Forms\Components\Select::make('question_type')
@@ -148,7 +143,7 @@ class LessonResource extends Resource
                                                                             ->columnSpan('full')
                                                                             ->maxLength(255),
                                                                         Forms\Components\TextInput::make('choice_graphics')
-                                                                            ->placeholder('image url')
+                                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
                                                                             ->maxLength(255),
                                                                         Forms\Components\Select::make('correct')
                                                                             ->options([
@@ -261,7 +256,7 @@ class LessonResource extends Resource
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
                                                         Forms\Components\TextInput::make('question_graphics')
-                                                            ->placeholder('image url')
+                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
                                                         Forms\Components\Select::make('question_type')
@@ -293,7 +288,7 @@ class LessonResource extends Resource
                                                                             ->columnSpan('full')
                                                                             ->maxLength(255),
                                                                         Forms\Components\TextInput::make('choice_graphics')
-                                                                            ->placeholder('image url')
+                                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
                                                                             ->maxLength(255),
                                                                         Forms\Components\Select::make('correct')
                                                                             ->options([
@@ -377,7 +372,7 @@ class LessonResource extends Resource
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
                                                         Forms\Components\TextInput::make('question_graphics')
-                                                            ->placeholder('image url')
+                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
                                                             ->columnSpan('full')
                                                             ->maxLength(255),
                                                         Forms\Components\Select::make('question_type')
@@ -401,7 +396,7 @@ class LessonResource extends Resource
                                                                             ->columnSpan('full')
                                                                             ->maxLength(255),
                                                                         Forms\Components\TextInput::make('choice_graphics')
-                                                                            ->placeholder('image url')
+                                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
                                                                             ->maxLength(255),
                                                                         Forms\Components\Select::make('correct')
                                                                             ->options([
