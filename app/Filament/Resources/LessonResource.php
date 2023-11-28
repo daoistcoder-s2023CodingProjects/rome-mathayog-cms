@@ -9,7 +9,6 @@ use App\Models\CourseSkillTitle;
 use App\Models\Lesson;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -62,7 +61,7 @@ class LessonResource extends Resource
 
                             ])->columnSpan('full'),
 
-                        Forms\Components\Card::make()
+                        Section::make()
                             ->schema([
                                 Forms\Components\Placeholder::make('Lesson Content'),
 
@@ -105,7 +104,7 @@ class LessonResource extends Resource
                                                 'Relational' => 'Relational',
                                                 'Extended-Abstract' => 'Extended-Abstract',
                                             ]),
-                                        Forms\Components\Card::make()
+                                        Section::make()
                                             ->schema([
                                                 Forms\Components\Placeholder::make('Activity Questions'),
                                                 Forms\Components\Repeater::make('actQuestions')
@@ -137,7 +136,7 @@ class LessonResource extends Resource
                                                             ])
                                                             ->columnSpan(1),
 
-                                                        Forms\Components\Card::make()
+                                                        Section::make()
                                                             ->schema([
                                                                 Forms\Components\Placeholder::make('Choices'),
                                                                 Forms\Components\Repeater::make('actChoices')
@@ -190,7 +189,7 @@ class LessonResource extends Resource
                                                                     ->defaultItems(0),
                                                             ]),
 
-                                                        Forms\Components\Card::make()
+                                                        Section::make()
                                                             ->schema([
                                                                 Forms\Components\Placeholder::make('Hints'),
                                                                 Forms\Components\Repeater::make('actHints')
@@ -250,7 +249,7 @@ class LessonResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('exercise_title'),
                                         Forms\Components\TextInput::make('objective'),
-                                        Forms\Components\Card::make()
+                                        Section::make()
                                             ->schema([
                                                 Forms\Components\Placeholder::make('Exercise Questions'),
                                                 Forms\Components\Repeater::make('exeQuestions')
@@ -282,7 +281,7 @@ class LessonResource extends Resource
                                                             ])
                                                             ->columnSpan(1),
 
-                                                        Forms\Components\Card::make()
+                                                        Section::make()
                                                             ->schema([
                                                                 Forms\Components\Placeholder::make('Choices'),
                                                                 Forms\Components\Repeater::make('exeChoices')
@@ -366,7 +365,7 @@ class LessonResource extends Resource
                                         Forms\Components\TextInput::make('summative_assesment_title'),
                                         Forms\Components\TextInput::make('description'),
                                         Forms\Components\TextInput::make('level_id'),
-                                        Forms\Components\Card::make()
+                                        Section::make()
                                             ->schema([
                                                 Forms\Components\Placeholder::make('Summative Questions'),
                                                 Forms\Components\Repeater::make('sumQuestions')
@@ -390,7 +389,7 @@ class LessonResource extends Resource
                                                             ])
                                                             ->columnSpan(1),
 
-                                                        Forms\Components\Card::make()
+                                                        Section::make()
                                                             ->schema([
                                                                 Forms\Components\Placeholder::make('Choices'),
                                                                 Forms\Components\Repeater::make('sumChoices')
