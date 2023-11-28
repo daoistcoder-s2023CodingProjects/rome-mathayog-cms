@@ -65,23 +65,13 @@ class LessonResource extends Resource
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('video_title')
-                                            ->maxLength(255)
-                                            ->columnSpan(1),
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('video_description')
+                                            ->maxLength(255),
                                         Forms\Components\TextInput::make('video_url')
                                             ->label('Video')
-                                            ->maxLength(255)
-                                            ->columnSpan(1),
-                                        Forms\Components\TextArea::make('video_description')
-                                            ->rows(2)
-                                            ->columnSpan(2),
+                                            ->maxLength(255),
                                     ])
-                                    ->columns(2)
-                                    ->deleteAction(
-                                        fn (Action $action) => $action->label('Delete Video')
-                                            ->requiresConfirmation()
-                                            ->modalDescription('Are you sure you\'d like to delete this Video? This cannot be undone.')
-                                            ->modalSubmitActionLabel('Yes, delete it')
-                                    )
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Video')
                                     )
@@ -99,8 +89,8 @@ class LessonResource extends Resource
                                     ->label('')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('activity_title')
-                                            ->columnSpan(1),
+                                        Forms\Components\TextInput::make('activity_title'),
+                                        Forms\Components\TextInput::make('objective'),
                                         Forms\Components\Select::make('solo_framework')
                                             ->options([
                                                 'Pre-Stractural' => 'Pre-Stractural',
@@ -108,19 +98,133 @@ class LessonResource extends Resource
                                                 'Multi-Stractural' => 'Multi-Stractural',
                                                 'Relational' => 'Relational',
                                                 'Extended-Abstract' => 'Extended-Abstract',
-                                            ])
-                                            ->columnSpan(1),
-                                        Forms\Components\Textarea::make('objective')
-                                            ->rows(2)
-                                            ->columnSpan(2),
+                                            ]),
+                                        Section::make()
+                                            ->schema([
+                                                Forms\Components\Placeholder::make('Activity Questions'),
+                                                Forms\Components\Repeater::make('actQuestions')
+                                                    ->label('')
+                                                    ->relationship()
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('activity_question')
+                                                            ->default('edit your activity question')
+                                                            ->columnSpan('full')
+                                                            ->maxLength(255),
+                                                        Forms\Components\TextInput::make('question_graphics')
+                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
+                                                            ->columnSpan('full')
+                                                            ->maxLength(255),
+                                                        Forms\Components\Select::make('question_type')
+                                                            ->options([
+                                                                'multiple choice' => 'Multiple Choice',
+                                                                'graphic choice' => 'Graphic Choice',
+                                                                'fill in the blanks' => 'Fill in the Blanks',
+                                                                'drag and drop' => 'Drag and Drop',
+                                                            ])
+                                                            ->columnSpan(1),
+                                                        Forms\Components\Select::make('learning_tools')
+                                                            ->options([
+                                                                'selection' => 'Selection',
+                                                                'pencil' => 'Pencil',
+                                                                'calculator' => 'Calculator',
+                                                                'white board' => 'White Board',
+                                                            ])
+                                                            ->columnSpan(1),
+
+                                                        Section::make()
+                                                            ->schema([
+                                                                Forms\Components\Placeholder::make('Choices'),
+                                                                Forms\Components\Repeater::make('actChoices')
+                                                                    ->label('')
+                                                                    ->relationship()
+                                                                    ->schema([
+                                                                        Forms\Components\TextInput::make('choice_text')
+                                                                            ->default('input the choice text')
+                                                                            ->columnSpan('full')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('choice_graphics')
+                                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\Select::make('correct')
+                                                                            ->options([
+                                                                                'TRUE' => 'True',
+                                                                                'FALSE' => 'False',
+                                                                            ])
+                                                                            ->columnSpan(1),
+                                                                        Section::make()
+                                                                            ->schema([
+                                                                                Forms\Components\Placeholder::make('Feedback'),
+                                                                                Forms\Components\Repeater::make('actFeedback')
+                                                                                    ->label('')
+                                                                                    ->relationship()
+                                                                                    ->schema([
+                                                                                        Forms\Components\TextInput::make('activity_feedback')
+                                                                                            ->default('input new feedback')
+                                                                                            ->label('')
+                                                                                            ->maxLength(255),
+                                                                                    ])
+                                                                                    ->addAction(
+                                                                                        fn (Action $action) => $action->label('Update Feedback')
+                                                                                    )
+                                                                                    ->collapsed()
+                                                                                    ->itemLabel(fn (array $state): ?string => $state['activity_feedback'] ?? null)
+                                                                                    ->maxItems(1)
+                                                                                    ->defaultItems(0),
+                                                                            ]),
+
+                                                                    ])
+                                                                    ->addAction(
+                                                                        fn (Action $action) => $action->label('Add Choices')
+                                                                    )
+                                                                    ->reorderable()
+                                                                    ->cloneable()
+                                                                    ->collapsed()
+                                                                    ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
+                                                                    ->maxItems(4)
+                                                                    ->defaultItems(0),
+                                                            ]),
+
+                                                        Section::make()
+                                                            ->schema([
+                                                                Forms\Components\Placeholder::make('Hints'),
+                                                                Forms\Components\Repeater::make('actHints')
+                                                                    ->label('')
+                                                                    ->relationship()
+                                                                    ->schema([
+                                                                        Forms\Components\TextInput::make('first_hint')
+                                                                            ->placeholder('add first hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('second_hint')
+                                                                            ->placeholder('add second hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('third_hint')
+                                                                            ->placeholder('add third hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('technical_hint')
+                                                                            ->placeholder('add technical hint')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('growth_mindset_hint')
+                                                                            ->placeholder('add growth mindset hint')
+                                                                            ->maxLength(255),
+
+                                                                    ])
+                                                                    ->addAction(
+                                                                        fn (Action $action) => $action->label('Update Hints')
+                                                                    )
+                                                                    ->maxItems(1)
+                                                                    ->defaultItems(0),
+                                                            ]),
+                                                    ])
+                                                    ->addAction(
+                                                        fn (Action $action) => $action->label('Add Question')
+                                                    )
+                                                    ->reorderable()
+                                                    ->cloneable()
+                                                    ->collapsed()
+                                                    ->itemLabel(fn (array $state): ?string => $state['activity_question'] ?? null)
+                                                    ->defaultItems(0),
+                                            ]),
                                     ])
-                                    ->columns(2)
-                                    ->deleteAction(
-                                        fn (Action $action) => $action->label('Delete Activity')
-                                            ->requiresConfirmation()
-                                            ->modalDescription('Are you sure you\'d like to delete this Activity? This cannot be undone.')
-                                            ->modalSubmitActionLabel('Yes, delete it')
-                                    )
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Activity')
                                     )

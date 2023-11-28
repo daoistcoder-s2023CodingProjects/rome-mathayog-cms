@@ -8,6 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 
 use App\Filament\Resources\CourseSkillTitleResource;
 use App\Filament\Traits\HasParentResource;
+
 class EditLesson extends EditRecord
 {
     use HasParentResource;
@@ -15,13 +16,6 @@ class EditLesson extends EditRecord
     protected static string $parentResource = CourseSkillTitleResource::class;
 
     protected static string $resource = LessonResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
 
     protected function getRedirectUrl(): string
     {
