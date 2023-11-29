@@ -18,7 +18,7 @@ class SumQuestionResource extends Resource
 {
     protected static ?string $model = SumQuestion::class;
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $navigationGroup = 'Contents';
 

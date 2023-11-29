@@ -39,11 +39,11 @@ class ActQuestionResource extends Resource
 {
     protected static ?string $model = ActQuestion::class;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $navigationGroup = 'Contents';
 
-    protected static ?string $navigationLabel = 'Activities';
+    protected static ?string $navigationLabel = 'Activity Questions';
 
     public static function form(Form $form): Form
     {
