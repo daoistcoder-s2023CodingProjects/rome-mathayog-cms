@@ -52,6 +52,7 @@ class LessonResource extends Resource
                         Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('lesson_title')
+                                    ->placeholder('add lesson title')
                                     ->maxLength(255),
 
                             ])->columnSpan('full'),
@@ -65,15 +66,20 @@ class LessonResource extends Resource
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('video_title')
+                                            ->placeholder('add video title')
                                             ->maxLength(255)
-                                            ->columnSpan(1),
-                                        Forms\Components\TextInput::make('video_url')
+                                            ->columnSpan(2),
+                                        Forms\Components\FileUpload::make('video_url')
                                             ->label('Video')
-                                            ->maxLength(255)
+                                            ->disk('s3')
+                                            ->directory('videos')
+                                            ->maxSize(20000)
+                                            ->visibility('public')
                                             ->columnSpan(1),
                                         Forms\Components\TextArea::make('video_description')
-                                            ->rows(2)
-                                            ->columnSpan(2),
+                                            ->placeholder('add video description')
+                                            ->rows(3)
+                                            ->columnSpan(1),
                                     ])
                                     ->columns(2)
                                     ->deleteAction(
