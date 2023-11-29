@@ -56,7 +56,6 @@ class CourseSkillTitleResource extends Resource
                     ->columnSpan(1),
                 Forms\Components\TextInput::make('skill_name')
                     ->label('Course Skill')
-                    ->rows(5)
                     ->maxLength(255)
                     ->columnSpan(2),
 
@@ -122,7 +121,7 @@ class CourseSkillTitleResource extends Resource
                     ->url(fn (CourseSkillTitle $record): string => self::getUrl('lessons.index', [
                         'parent' => $record->id,
                     ])),
-                Tables\Actions\EditAction::make()->slideOver(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
