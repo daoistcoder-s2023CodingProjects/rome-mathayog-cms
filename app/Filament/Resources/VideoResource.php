@@ -9,9 +9,15 @@ use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VideoResource extends Resource
@@ -26,38 +32,52 @@ class VideoResource extends Resource
     {
         return $form
             ->schema([
+                //Use the schema in table() method to create a form
                 Forms\Components\Select::make('lesson_id')
-                    ->relationship('lesson', 'lesson_title')
-                    ->columnSpanFull(),
+                    ->relationship('lesson', 'lesson_id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->courseSkillTitle->course_title} => {$record->lesson_title} ")
+                    ->columnSpan(1),
                 Forms\Components\TextInput::make('video_title')
                     ->required()
-                    ->maxLength(100),
+                    ->maxLength(100)
+                    ->columnSpan(1),
                 FileUpload::make('video_url')
                     ->label('Video')
                     ->disk('s3')
                     ->directory('videos')
                     ->maxSize(20000)
-                    ->visibility('public'),
+                    ->visibility('public')
+                    ->columnSpan(1),
                 Forms\Components\Textarea::make('video_description')
+                    ->rows(3)
                     ->required()
                     ->maxLength(65535)
-                    ->columnSpanFull(),
+                    ->columnSpan(1),
 
-            ]);
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('lesson.courseSkillTitle.course_title')
+                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
+                    ->getDescriptionFromRecordUsing(fn (Video $record): string => $record->lesson->lesson_title)
+                    ->label('Course Title')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+            ])->defaultGroup('lesson.courseSkillTitle.course_title')
             ->columns([
                 Tables\Columns\TextColumn::make('lesson.lesson_title')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('video_title')
                     ->description(fn (Video $record): string => $record->video_description)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('video_url')
-                    ->label('Video URL'),
+                    ->label('Video URL')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
