@@ -82,12 +82,12 @@ class LessonResource extends Resource
                                             ->columnSpan(1),
                                     ])
                                     ->columns(2)
-                                    ->deleteAction(
-                                        fn (Action $action) => $action->label('Delete Video')
-                                            ->requiresConfirmation()
-                                            ->modalDescription('Are you sure you\'d like to delete this Video? This cannot be undone.')
-                                            ->modalSubmitActionLabel('Yes, delete it')
-                                    )
+                                    // ->deleteAction(
+                                    //     fn (Action $action) => $action->label('Delete Video')
+                                    //         ->requiresConfirmation()
+                                    //         ->modalDescription('Are you sure you\'d like to delete this Video? This cannot be undone.')
+                                    //         ->modalSubmitActionLabel('Yes, delete it')
+                                    // )
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Video')
                                     )
@@ -121,12 +121,12 @@ class LessonResource extends Resource
                                             ->columnSpan(2),
                                     ])
                                     ->columns(2)
-                                    ->deleteAction(
-                                        fn (Action $action) => $action->label('Delete Activity')
-                                            ->requiresConfirmation()
-                                            ->modalDescription('Are you sure you\'d like to delete this Activity? This cannot be undone.')
-                                            ->modalSubmitActionLabel('Yes, delete it')
-                                    )
+                                    // ->deleteAction(
+                                    //     fn (Action $action) => $action->label('Delete Activity')
+                                    //         ->requiresConfirmation()
+                                    //         ->modalDescription('Are you sure you\'d like to delete this Activity? This cannot be undone.')
+                                    //         ->modalSubmitActionLabel('Yes, delete it')
+                                    // )
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Activity')
                                     )
