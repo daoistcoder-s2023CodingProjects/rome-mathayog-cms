@@ -45,17 +45,22 @@ class CourseSkillTitleResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('sub_topic_id')
+                    ->label('Sub Topic')
+                    ->relationship('subTopic', 'sub_topic_id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->topic->topic_title} => {$record->sub_topic_title} ")
+                    ->columnSpan(1),
                 Forms\Components\TextInput::make('course_title')
                     ->label('Course Title')
                     ->maxLength(255)
-                    ->columnSpanFull(),
-                Forms\Components\TextArea::make('skill_name')
+                    ->columnSpan(1),
+                Forms\Components\TextInput::make('skill_name')
                     ->label('Course Skill')
                     ->rows(5)
-                    ->maxLength(1024)
-                    ->columnSpanFull(),
+                    ->maxLength(255)
+                    ->columnSpan(2),
 
-            ]);
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table

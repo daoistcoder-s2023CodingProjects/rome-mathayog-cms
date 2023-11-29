@@ -76,18 +76,18 @@ class LessonResource extends Resource
                                             ->maxSize(20000)
                                             ->visibility('public')
                                             ->columnSpan(1),
-                                        Forms\Components\TextArea::make('video_description')
+                                        Forms\Components\TextInput::make('video_description')
                                             ->placeholder('add video description')
-                                            ->rows(3)
+                                            ->maxLength(255)
                                             ->columnSpan(1),
                                     ])
                                     ->columns(2)
-                                    // ->deleteAction(
-                                    //     fn (Action $action) => $action->label('Delete Video')
-                                    //         ->requiresConfirmation()
-                                    //         ->modalDescription('Are you sure you\'d like to delete this Video? This cannot be undone.')
-                                    //         ->modalSubmitActionLabel('Yes, delete it')
-                                    // )
+                                    ->deleteAction(
+                                        fn (Action $action) => $action->label('Delete Video')
+                                            ->requiresConfirmation()
+                                            ->modalDescription('Are you sure you\'d like to delete this Video? This cannot be undone.')
+                                            ->modalSubmitActionLabel('Yes, delete it')
+                                    )
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Video')
                                     )
@@ -106,6 +106,7 @@ class LessonResource extends Resource
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('activity_title')
+                                            ->maxLength(255)
                                             ->columnSpan(1),
                                         Forms\Components\Select::make('solo_framework')
                                             ->options([
@@ -116,17 +117,17 @@ class LessonResource extends Resource
                                                 'Extended-Abstract' => 'Extended-Abstract',
                                             ])
                                             ->columnSpan(1),
-                                        Forms\Components\Textarea::make('objective')
-                                            ->rows(2)
+                                        Forms\Components\TextInput::make('objective')
+                                            ->maxLength(255)
                                             ->columnSpan(2),
                                     ])
                                     ->columns(2)
-                                    // ->deleteAction(
-                                    //     fn (Action $action) => $action->label('Delete Activity')
-                                    //         ->requiresConfirmation()
-                                    //         ->modalDescription('Are you sure you\'d like to delete this Activity? This cannot be undone.')
-                                    //         ->modalSubmitActionLabel('Yes, delete it')
-                                    // )
+                                    ->deleteAction(
+                                        fn (Action $action) => $action->label('Delete Activity')
+                                            ->requiresConfirmation()
+                                            ->modalDescription('Are you sure you\'d like to delete this Activity? This cannot be undone.')
+                                            ->modalSubmitActionLabel('Yes, delete it')
+                                    )
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Activity')
                                     )
