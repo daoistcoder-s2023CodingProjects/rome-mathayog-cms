@@ -62,7 +62,7 @@ class ExerciseResource extends Resource
             ->columns([
                 Stack::make([
                     Tables\Columns\TextColumn::make('exercise_title')
-                        ->description(fn (Exercise $record): ?string => 'Objective: ' . $record->objective ?? 'Objective-skill: Add Obective')
+                        ->description(fn (Exercise $record): ?string => 'Objective: ' . $record->objective ?? 'Objective: Add Obective')
                         ->weight(FontWeight::Bold)
                         ->searchable(),
                 ]),
