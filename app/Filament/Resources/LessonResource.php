@@ -5,15 +5,18 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LessonResource\Pages;
 use App\Filament\Resources\LessonResource\Pages\ListLessons;
 use App\Filament\Resources\LessonResource\RelationManagers;
+use App\Models\Activity;
 use App\Models\CourseSkillTitle;
 use App\Models\Lesson;
 use Filament\Forms;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
@@ -120,6 +123,16 @@ class LessonResource extends Resource
                                         Forms\Components\TextInput::make('objective')
                                             ->maxLength(255)
                                             ->columnSpan(2),
+
+                                        Actions::make([
+                                            Action::make('addNewActivityQuestion')
+                                                ->label('Add New Activity Question')
+                                                ->url(fn ($record): string => ActivityResource::getUrl('edit', ['record' => $record->id]))
+                                                ->color('success')
+                                                ->icon('heroicon-m-plus')
+
+                                        ])->columnSpan(2)->alignment(Alignment::Center)
+
                                     ])
                                     ->columns(2)
                                     ->deleteAction(
