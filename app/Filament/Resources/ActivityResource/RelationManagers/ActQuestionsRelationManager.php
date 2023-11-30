@@ -33,10 +33,10 @@ class ActQuestionsRelationManager extends RelationManager
         return $form
             ->schema([
                 //Use the schema in table() method to create a form
-                Forms\Components\Select::make('activity_id')
-                    ->relationship('activity', 'activity_id')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->lesson->courseSkillTitle->course_title} => {$record->lesson->lesson_title} => {$record->activity_title} ")
-                    ->columnSpanFull(),
+                // Forms\Components\Select::make('activity_id')
+                //     ->relationship('activity', 'activity_id')
+                //     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->lesson->courseSkillTitle->course_title} => {$record->lesson->lesson_title} => {$record->activity_title} ")
+                //     ->columnSpanFull(),
                 Forms\Components\TextInput::make('activity_question')
                     ->required()
                     ->maxLength(255)
