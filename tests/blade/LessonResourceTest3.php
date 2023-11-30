@@ -2,36 +2,32 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Resources\Resource;
 use App\Filament\Resources\LessonResource\Pages;
 use App\Filament\Resources\LessonResource\Pages\ListLessons;
 use App\Filament\Resources\LessonResource\RelationManagers;
-
 use App\Models\Activity;
 use App\Models\CourseSkillTitle;
 use App\Models\Lesson;
-
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-
-
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Alignment;
-
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
 use Filament\Tables\Grouping\Group;
-
-use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Support\Htmlable;
 
 class LessonResource extends Resource
@@ -202,34 +198,75 @@ class LessonResource extends Resource
                                     ->label('')
                                     ->relationship()
                                     ->schema([
-                                        Forms\Components\TextInput::make('summative_assesment_title')
-                                            ->maxLength(255)
-                                            ->columnSpan(2),
-                                        Forms\Components\TextInput::make('level_id')
-                                            ->default('2')
-                                            ->maxLength(255)
-                                            ->columnSpan(1),
-                                        Forms\Components\TextInput::make('description')
-                                            ->maxLength(255)
-                                            ->columnSpan(3),
+                                        Forms\Components\TextInput::make('summative_assesment_title'),
+                                        Forms\Components\TextInput::make('description'),
+                                        Forms\Components\TextInput::make('level_id'),
+                                        Section::make()
+                                            ->schema([
+                                                Forms\Components\Placeholder::make('Summative Questions'),
+                                                Forms\Components\Repeater::make('sumQuestions')
+                                                    ->label('')
+                                                    ->relationship()
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('summative_assesment_question')
+                                                            ->default('edit your summative question')
+                                                            ->columnSpan('full')
+                                                            ->maxLength(255),
+                                                        Forms\Components\TextInput::make('question_graphics')
+                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
+                                                            ->columnSpan('full')
+                                                            ->maxLength(255),
+                                                        Forms\Components\Select::make('question_type')
+                                                            ->options([
+                                                                'multiple choice' => 'Multiple Choice',
+                                                                'graphic choice' => 'Graphic Choice',
+                                                                'fill in the blanks' => 'Fill in the Blanks',
+                                                                'drag and drop' => 'Drag and Drop',
+                                                            ])
+                                                            ->columnSpan(1),
 
-                                        Actions::make([
-                                            Action::make('addNewSummativeQuestion')
-                                                ->label('Add New Summative Question')
-                                                ->url(fn ($record): string => SummativeAssesmentResource::getUrl('edit', ['record' => $record->id]))
-                                                ->color('success')
-                                                ->icon('heroicon-m-plus')
+                                                        Section::make()
+                                                            ->schema([
+                                                                Forms\Components\Placeholder::make('Choices'),
+                                                                Forms\Components\Repeater::make('sumChoices')
+                                                                    ->label('')
+                                                                    ->relationship()
+                                                                    ->schema([
+                                                                        Forms\Components\TextInput::make('choice_text')
+                                                                            ->default('input the choice text')
+                                                                            ->columnSpan('full')
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\TextInput::make('choice_graphics')
+                                                                            ->placeholder(self::IMAGE_PLACEHOLDER)
+                                                                            ->maxLength(255),
+                                                                        Forms\Components\Select::make('correct')
+                                                                            ->options([
+                                                                                'TRUE' => 'True',
+                                                                                'FALSE' => 'False',
+                                                                            ])
+                                                                            ->columnSpan(1),
+                                                                    ])
+                                                                    ->addAction(
+                                                                        fn (Action $action) => $action->label('Add Choices')
+                                                                    )
+                                                                    ->reorderable()
+                                                                    ->cloneable()
+                                                                    ->collapsed()
+                                                                    ->itemLabel(fn (array $state): ?string => $state['choice_text'] ?? null)
+                                                                    ->maxItems(4)
+                                                                    ->defaultItems(0),
+                                                            ]),
 
-                                        ])->columnSpan(3)->alignment(Alignment::Center)
-
+                                                    ])
+                                                    ->addAction(
+                                                        fn (Action $action) => $action->label('Add Question')
+                                                    )
+                                                    ->cloneable()
+                                                    ->collapsed()
+                                                    ->itemLabel(fn (array $state): ?string => $state['summative_assesment_question'] ?? null)
+                                                    ->defaultItems(0),
+                                            ]),
                                     ])
-                                    ->columns(3)
-                                    ->deleteAction(
-                                        fn (Action $action) => $action->label('Delete Summative Assesment')
-                                            ->requiresConfirmation()
-                                            ->modalDescription('Are you sure you\'d like to delete this Summative Assesment? This cannot be undone.')
-                                            ->modalSubmitActionLabel('Yes, delete it')
-                                    )
                                     ->addAction(
                                         fn (Action $action) => $action->label('Add Summative Assesment')
                                     )
