@@ -83,7 +83,7 @@ class ExerciseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ExeQuestionsRelationManager::class,
         ];
     }
 
