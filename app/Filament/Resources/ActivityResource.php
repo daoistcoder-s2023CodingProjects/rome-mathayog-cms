@@ -12,6 +12,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Columns\Layout\Stack;
+
+use Filament\Support\Enums\FontWeight;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -58,13 +62,24 @@ class ActivityResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('lesson.lesson_title')
+                // ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
+                ->getTitleFromRecordUsing(fn (Activity $record): string => 'Course Title: ' . $record->lesson->courseSkillTitle->course_title)
+                ->getDescriptionFromRecordUsing(fn (Activity $record): string => 'Lesson Title: ' . $record->lesson->lesson_title)
+                ->collapsible()
+                ->titlePrefixedWithLabel(false),
+            ])->defaultGroup('lesson.lesson_title')
             ->columns([
-                Tables\Columns\TextColumn::make('activity_title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('objective')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('solo_framework')
-                    ->searchable(),
+                Stack::make([
+                    Tables\Columns\TextColumn::make('activity_title')
+                        ->description(fn (Activity $record): ?string => 'Objective: ' . $record->objective ?? 'Objective-skill: Add Obective')
+                        ->weight(FontWeight::Bold)
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('solo_framework')
+                        ->badge()
+                        ->searchable(),
+                ]),
             ])
             ->filters([
                 //
