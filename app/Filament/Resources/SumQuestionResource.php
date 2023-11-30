@@ -18,11 +18,11 @@ class SumQuestionResource extends Resource
 {
     protected static ?string $model = SumQuestion::class;
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 8;
 
     protected static ?string $navigationGroup = 'Contents';
 
-    protected static ?string $navigationLabel = 'Summative Assesment';
+    protected static ?string $navigationLabel = 'Summative Questions';
 
     public static function form(Form $form): Form
     {

@@ -18,11 +18,11 @@ class ExeQuestionResource extends Resource
 {
     protected static ?string $model = ExeQuestion::class;
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $navigationGroup = 'Contents';
 
-    protected static ?string $navigationLabel = 'Exercises';
+    protected static ?string $navigationLabel = 'Exercise Questions';
 
     public static function form(Form $form): Form
     {

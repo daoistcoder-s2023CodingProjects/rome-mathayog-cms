@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ActivityResource\Pages;
-use App\Filament\Resources\ActivityResource\RelationManagers;
-use App\Models\Activity;
+use App\Filament\Resources\ExerciseResource\Pages;
+use App\Filament\Resources\ExerciseResource\RelationManagers;
+use App\Models\Exercise;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -22,11 +22,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ActivityResource extends Resource
+class ExerciseResource extends Resource
 {
-    protected static ?string $model = Activity::class;
+    protected static ?string $model = Exercise::class;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     protected static ?string $navigationGroup = 'Contents';
 
@@ -38,23 +38,14 @@ class ActivityResource extends Resource
                     ->relationship('lesson', 'lesson_id')
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->courseSkillTitle->course_title} => {$record->lesson_title} =>")
                     ->columnSpan(1),
-                Forms\Components\TextInput::make('activity_title')
+                Forms\Components\TextInput::make('exercise_title')
                     ->maxLength(255)
-                    ->columnSpan(1),
-                Forms\Components\Select::make('solo_framework')
-                    ->options([
-                        'Pre-Stractural' => 'Pre-Stractural',
-                        'Uni-Stractural' => 'Uni-Stractural',
-                        'Multi-Stractural' => 'Multi-Stractural',
-                        'Relational' => 'Relational',
-                        'Extended-Abstract' => 'Extended-Abstract',
-                    ])
                     ->columnSpan(1),
                 Forms\Components\Textarea::make('objective')
                     ->rows(3)
-                    ->columnSpan(3),
+                    ->columnSpan(2),
             ])
-            ->columns(3);
+            ->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -62,20 +53,17 @@ class ActivityResource extends Resource
         return $table
             ->groups([
                 Group::make('lesson.lesson_title')
-                // ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
-                ->getTitleFromRecordUsing(fn (Activity $record): string => 'Course Title: ' . $record->lesson->courseSkillTitle->course_title)
-                ->getDescriptionFromRecordUsing(fn (Activity $record): string => 'Lesson Title: ' . $record->lesson->lesson_title)
-                ->collapsible()
-                ->titlePrefixedWithLabel(false),
+                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
+                    ->getTitleFromRecordUsing(fn (Exercise $record): string => 'Course Title: ' . $record->lesson->courseSkillTitle->course_title)
+                    ->getDescriptionFromRecordUsing(fn (Exercise $record): string => 'Lesson Title: ' . $record->lesson->lesson_title)
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
             ])->defaultGroup('lesson.lesson_title')
             ->columns([
                 Stack::make([
-                    Tables\Columns\TextColumn::make('activity_title')
-                        ->description(fn (Activity $record): ?string => 'Objective: ' . $record->objective ?? 'Objective-skill: Add Obective')
+                    Tables\Columns\TextColumn::make('exercise_title')
+                        ->description(fn (Exercise $record): ?string => 'Objective: ' . $record->objective ?? 'Objective-skill: Add Obective')
                         ->weight(FontWeight::Bold)
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('solo_framework')
-                        ->badge()
                         ->searchable(),
                 ]),
             ])
@@ -95,16 +83,16 @@ class ActivityResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ActQuestionsRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListActivities::route('/'),
-            'create' => Pages\CreateActivity::route('/create'),
-            'edit' => Pages\EditActivity::route('/{record}/edit'),
+            'index' => Pages\ListExercises::route('/'),
+            'create' => Pages\CreateExercise::route('/create'),
+            'edit' => Pages\EditExercise::route('/{record}/edit'),
         ];
     }
 }
