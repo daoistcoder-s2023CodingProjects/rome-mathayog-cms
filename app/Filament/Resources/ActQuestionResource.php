@@ -221,48 +221,47 @@ class ActQuestionResource extends Resource
                         Forms\Components\TextInput::make('growth_mindset_hint')
                             ->placeholder('add growth mindset hint')
                             ->maxLength(255),
-
-                        Forms\Components\Repeater::make('filActHint')
-                            ->label('Fil-hints')
-                            ->relationship()
-                            ->schema([
-                                Forms\Components\TextInput::make('first_hint')
-                                    ->label('Fil-first hint')
-                                    ->placeholder('add first hint')
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('second_hint')
-                                    ->label('Fil-second hint')
-                                    ->placeholder('add second hint')
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('third_hint')
-                                    ->label('Fil-third hint')
-                                    ->placeholder('add third hint')
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('technical_hint')
-                                    ->label('Fil-technical hint')
-                                    ->placeholder('add technical hint')
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('growth_mindset_hint')
-                                    ->label('Fil-growth mindset hint')
-                                    ->placeholder('add growth mindset hint')
-                                    ->maxLength(255),
-
-                            ])
-                            ->addAction(
-                                fn (Action $action) => $action->label('Update Fil-hints')
-                            )
-                            ->maxItems(1)
-                            ->collapsible()
-                            ->itemLabel(fn (array $state): ?string => $state['first_hint'] ?? null)
-                            ->defaultItems(0)
-                            ->columnSpanFull(),
-
                     ])
                     ->addAction(
                         fn (Action $action) => $action->label('Update Eng-hints')
                     )
                     ->maxItems(1)
-                    ->collapsible()
+                    ->collapsed()
+                    ->itemLabel(fn (array $state): ?string => $state['first_hint'] ?? null)
+                    ->defaultItems(0)
+                    ->columnSpanFull(),
+
+                Forms\Components\Repeater::make('filActHints')
+                    ->label('Fil-hints')
+                    ->relationship()
+                    ->schema([
+                        Forms\Components\TextInput::make('first_hint')
+                            ->label('Fil-first hint')
+                            ->placeholder('add first hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('second_hint')
+                            ->label('Fil-second hint')
+                            ->placeholder('add second hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('third_hint')
+                            ->label('Fil-third hint')
+                            ->placeholder('add third hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('technical_hint')
+                            ->label('Fil-technical hint')
+                            ->placeholder('add technical hint')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('growth_mindset_hint')
+                            ->label('Fil-growth mindset hint')
+                            ->placeholder('add growth mindset hint')
+                            ->maxLength(255),
+
+                    ])
+                    ->addAction(
+                        fn (Action $action) => $action->label('Update Fil-hints')
+                    )
+                    ->maxItems(1)
+                    ->collapsed()
                     ->itemLabel(fn (array $state): ?string => $state['first_hint'] ?? null)
                     ->defaultItems(0)
                     ->columnSpanFull(),

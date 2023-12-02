@@ -27,6 +27,11 @@ class ActQuestion extends Model
         return $this->hasMany(ActHint::class);
     }
 
+    public function filActHints(): HasMany
+    {
+        return $this->hasMany(FilActHint::class);
+    }
+
     // hasOne Fil-ActQuestion
     public function filActQuestion(): HasOne
     {

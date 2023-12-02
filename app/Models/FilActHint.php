@@ -10,6 +10,11 @@ class FilActHint extends Model
 {
     use HasFactory;
 
+    public function actQuestion(): BelongsTo
+    {
+        return $this->belongsTo(ActQuestion::class);
+    }
+
     public function filActQuestion(): BelongsTo
     {
         return $this->belongsTo(FilActQuestion::class);
