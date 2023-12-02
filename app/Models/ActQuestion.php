@@ -35,6 +35,6 @@ class ActQuestion extends Model
     // hasOne Fil-ActQuestion
     public function filActQuestion(): HasOne
     {
-        return $this->hasOne(FilActQuestion::class, 'id');
+        return $this->hasOne(FilActQuestion::class);
     }
 }
