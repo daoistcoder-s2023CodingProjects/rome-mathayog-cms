@@ -23,7 +23,7 @@ class ActChoice extends Model
 
     public function filActChoice(): HasOne
     {
-        return $this->hasOne(FilActChoice::class, 'id');
+        return $this->hasOne(FilActChoice::class);
     }
 
     public function filActFeedback(): HasOne
