@@ -145,7 +145,7 @@ class CourseSkillTitleResource extends Resource
         return [
             'index' => Pages\ListCourseSkillTitles::route('/'),
 
-            // Lessons 
+            // Lessons
             'lessons.index' => ListLessons::route('/{parent}/lessons'),
             'lessons.create' => CreateLesson::route('/{parent}/lessons/create'),
             'lessons.edit' => EditLesson::route('/{parent}/lessons/{record}/edit'),
