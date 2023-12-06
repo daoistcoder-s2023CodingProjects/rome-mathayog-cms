@@ -131,7 +131,7 @@ class LessonResource extends Resource
                                         Actions::make([
                                             Action::make('addNewActivityQuestion')
                                                 ->label('Add New Activity Question')
-                                                ->url(fn ($record): string => ActivityResource::getUrl('edit', ['record' => $record->id]))
+                                                ->url(fn ($record): string => $record ? ActivityResource::getUrl('edit', ['record' => $record->id]) : '#')
                                                 ->color('success')
                                                 ->icon('heroicon-m-plus')
 
@@ -172,7 +172,7 @@ class LessonResource extends Resource
                                         Actions::make([
                                             Action::make('addNewExerciseQuestion')
                                                 ->label('Add New Exercise Question')
-                                                ->url(fn ($record): string => ExerciseResource::getUrl('edit', ['record' => $record->id]))
+                                                ->url(fn ($record): string => $record ? ExerciseResource::getUrl('edit', ['record' => $record->id]) : '#')
                                                 ->color('success')
                                                 ->icon('heroicon-m-plus')
 
@@ -216,7 +216,7 @@ class LessonResource extends Resource
                                         Actions::make([
                                             Action::make('addNewSummativeQuestion')
                                                 ->label('Add New Summative Question')
-                                                ->url(fn ($record): string => SummativeAssesmentResource::getUrl('edit', ['record' => $record->id]))
+                                                ->url(fn ($record): string => $record ? SummativeAssesmentResource::getUrl('edit', ['record' => $record->id]) : '#')
                                                 ->color('success')
                                                 ->icon('heroicon-m-plus')
 
