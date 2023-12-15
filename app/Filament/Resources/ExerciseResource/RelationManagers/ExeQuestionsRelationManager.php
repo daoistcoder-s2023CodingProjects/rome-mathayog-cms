@@ -74,6 +74,7 @@ class ExeQuestionsRelationManager extends RelationManager
                         'graphic choice' => 'Graphic Choice',
                         'fill in the blanks' => 'Fill in the Blanks',
                         'drag and drop' => 'Drag and Drop',
+                        'tables' => 'Tables',
                     ])
                     ->required()
                     ->columnSpan(1),
