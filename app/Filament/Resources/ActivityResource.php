@@ -37,10 +37,10 @@ class ActivityResource extends Resource
                 Forms\Components\Select::make('lesson_id')
                     ->relationship('lesson', 'lesson_id')
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->courseSkillTitle->course_title} => {$record->lesson_title} =>")
-                    ->columnSpan(1),
+                    ->columnSpan(3),
                 Forms\Components\TextInput::make('activity_title')
                     ->maxLength(255)
-                    ->columnSpan(1),
+                    ->columnSpan(2),
                 Forms\Components\Select::make('solo_framework')
                     ->options([
                         'Pre-Stractural' => 'Pre-Stractural',
@@ -52,9 +52,9 @@ class ActivityResource extends Resource
                     ->columnSpan(1),
                 Forms\Components\Textarea::make('objective')
                     ->rows(3)
-                    ->columnSpan(3),
+                    ->columnSpanFull(),
             ])
-            ->columns(3);
+            ->columns(6);
     }
 
     public static function table(Table $table): Table
