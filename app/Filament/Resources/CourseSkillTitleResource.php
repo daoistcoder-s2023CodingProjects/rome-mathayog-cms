@@ -66,6 +66,11 @@ class CourseSkillTitleResource extends Resource
     {
         return $table
             ->groups([
+                Group::make('courseSkillTitle')
+                    ->label('Recommended Courses')
+                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->whereIn('id', [1, 2, 3, 11, 14, 16, 26, 28, 34, 19])->orderBy('id', $direction))
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
                 Group::make('subTopic.topic.topic_title')
                     ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
                     ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => 'Sub-topic: ' . $record->subTopic->sub_topic_title)
@@ -77,7 +82,7 @@ class CourseSkillTitleResource extends Resource
                     ->getDescriptionFromRecordUsing(fn (CourseSkillTitle $record): string => 'Sub-topic: ' . $record->subTopic->sub_topic_title)
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
-            ])->defaultGroup('subTopic.sub_topic_title')
+            ])->defaultGroup('courseSkillTitle')
             ->columns([
                 Tables\Columns\TextColumn::make('subTopic.topic.level.level')
                     ->toggleable(isToggledHiddenByDefault: true)
