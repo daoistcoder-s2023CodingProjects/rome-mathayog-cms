@@ -23,7 +23,7 @@ class StatsAdminOverview extends BaseWidget
                 ->color('success'),
 
             // make a stat for Courses that had model inside lesson instance such as ActQuestion, ExeQuestion, SumQuestion where updated today
-            Stat::make('Updated Courses Today', CourseSkillTitle::query()->whereHas('lessons', function ($query) {
+            Stat::make('Courses Updated Today', CourseSkillTitle::query()->whereHas('lessons', function ($query) {
                 $query->whereHas('activities.actQuestions', function ($query) {
                     $query->whereDate('updated_at', today());
                 })
@@ -37,7 +37,7 @@ class StatsAdminOverview extends BaseWidget
                         $query->whereDate('updated_at', today());
                     });
             })->count())
-                ->description('Courses updated today')
+                ->description('courses with contents updated today')
                 ->color('success'),
 
             // make a stat for all questions in ActQuestion, ExeQuestion, SumQuestion
