@@ -37,7 +37,7 @@ class StatsAdminOverview extends BaseWidget
                         $query->whereDate('updated_at', today());
                     });
             })->count())
-                ->description('courses with contents updated today')
+                ->description('Courses with contents updated today')
                 ->color('success'),
 
             // make a stat for all questions in ActQuestion, ExeQuestion, SumQuestion
@@ -48,12 +48,12 @@ class StatsAdminOverview extends BaseWidget
 
             // make a stat for total question created today
             Stat::make('Questions for Today', ActQuestion::query()->whereDate('created_at', today())->count() + ExeQuestion::query()->whereDate('created_at', today())->count() + SumQuestion::query()->whereDate('created_at', today())->count())
-                ->description('questions uploaded today')
+                ->description('Questions uploaded today')
                 ->color('success'),
 
             // make a stat for total question created this week
             Stat::make('Questions this Week', ActQuestion::query()->whereBetween('created_at', [today()->startOfWeek(), today()->endOfWeek()])->count() + ExeQuestion::query()->whereBetween('created_at', [today()->startOfWeek(), today()->endOfWeek()])->count() + SumQuestion::query()->whereBetween('created_at', [today()->startOfWeek(), today()->endOfWeek()])->count())
-                ->description('questions uploaded this week')
+                ->description('Questions uploaded this week')
                 ->color('success'),
 
             // Stat::make('Activity Questions', ActQuestion::query()->count())
