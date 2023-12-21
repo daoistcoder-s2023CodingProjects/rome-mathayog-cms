@@ -261,7 +261,7 @@ class LessonResource extends Resource
             ->columns([
                 Stack::make([
                     Tables\Columns\TextColumn::make('lesson_title')
-                        ->size(TextColumnSize::Medium)
+                        ->size(TextColumnSize::Small)
                         ->weight(FontWeight::Bold)
                         ->searchable(),
                     Tables\Columns\TextColumn::make('videos.video_title')
@@ -270,19 +270,24 @@ class LessonResource extends Resource
                         ->searchable(),
                     Tables\Columns\TextColumn::make('activities.activity_title')
                         ->label('')
-                        ->listWithLineBreaks()
+                        ->state(fn (Lesson $record): string => $record->activities->map(function ($activity) {
+                            return $activity->activity_title . ' <em>- activity id:</em> <strong>' . $activity->id . '</strong>';
+                        })->implode('<br>'))
+                        ->html()
                         ->searchable(),
                     Tables\Columns\TextColumn::make('exercises.exercise_title')
                         ->label('')
-                        ->size(TextColumnSize::Medium)
-                        ->weight(FontWeight::Bold)
-                        ->listWithLineBreaks()
+                        ->state(fn (Lesson $record): string => $record->exercises->map(function ($exercise) {
+                            return $exercise->exercise_title . ' <em>- exercise id:</em> <strong>' . $exercise->id . '</strong>';
+                        })->implode('<br>'))
+                        ->html()
                         ->searchable(),
                     Tables\Columns\TextColumn::make('summativeAssesments.summative_assesment_title')
                         ->label('')
-                        ->size(TextColumnSize::Medium)
-                        ->weight(FontWeight::Bold)
-                        ->listWithLineBreaks()
+                        ->state(fn (Lesson $record): string => $record->summativeAssesments->map(function ($summativeAssesment) {
+                            return $summativeAssesment->summative_assesment_title . ' <em>- summative id:</em> <strong>' . $summativeAssesment->id . '</strong>';
+                        })->implode('<br>'))
+                        ->html()
                         ->searchable(),
                 ]),
             ])

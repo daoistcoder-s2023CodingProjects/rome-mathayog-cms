@@ -15,9 +15,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\Layout\Split;
 
 use Filament\Support\Enums\FontWeight;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -62,11 +62,11 @@ class ActivityResource extends Resource
         return $table
             ->groups([
                 Group::make('lesson.lesson_title')
-                // ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
-                ->getTitleFromRecordUsing(fn (Activity $record): string => 'Course Title: ' . $record->lesson->courseSkillTitle->course_title)
-                ->getDescriptionFromRecordUsing(fn (Activity $record): string => 'Lesson Title: ' . $record->lesson->lesson_title)
-                ->collapsible()
-                ->titlePrefixedWithLabel(false),
+                    // ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
+                    ->getTitleFromRecordUsing(fn (Activity $record): string => 'Course Title: ' . $record->lesson->courseSkillTitle->course_title)
+                    ->getDescriptionFromRecordUsing(fn (Activity $record): string => 'Lesson Title: ' . $record->lesson->lesson_title)
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
             ])->defaultGroup('lesson.lesson_title')
             ->columns([
                 Stack::make([
@@ -74,9 +74,18 @@ class ActivityResource extends Resource
                         ->description(fn (Activity $record): ?string => 'Objective: ' . $record->objective ?? 'Objective-skill: Add Obective')
                         ->weight(FontWeight::Bold)
                         ->searchable(),
-                    Tables\Columns\TextColumn::make('solo_framework')
-                        ->badge()
-                        ->searchable(),
+                    Split::make([
+                        Tables\Columns\TextColumn::make('id')
+                            ->state(fn (Activity $record): ?string => 'Activity id: '. $record->id ?? 'Activity id: invalid')
+                            ->badge()
+                            ->color('success')
+                            ->searchable()
+                            ->grow(false),
+                        Tables\Columns\TextColumn::make('solo_framework')
+                            ->badge()
+                            ->searchable(),
+                    ]),
+
                 ]),
             ])
             ->filters([
