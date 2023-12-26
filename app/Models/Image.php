@@ -24,6 +24,11 @@ class Image extends Model
                 $image->uploader = $user->firstname ?? $user->email;
                 $image->uploader_id = $user->id;
             }
+
+            // Update the preview_url field with the image_url
+            if ($image->image_url) {
+                $image->preview_url = $image->image_url;
+            }
         });
     }
 
