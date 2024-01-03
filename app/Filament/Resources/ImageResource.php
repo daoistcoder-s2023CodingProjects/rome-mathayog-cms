@@ -45,14 +45,15 @@ class ImageResource extends Resource
                 FileUpload::make('image_url')
                     ->label('Image Upload')
                     ->image()
-                    ->getUploadedFileNameForStorageUsing(
-                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
-                            ->prepend('s3-'),
-                    )
+                    // ->getUploadedFileNameForStorageUsing(
+                    //     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                    //         ->prepend('s3-'),
+                    // )
+                    ->preserveFilenames()
                     ->imagePreviewHeight('250')
                     ->imageEditor()
                     ->disk('s3')
-                    ->directory('bulk_upload_images')
+                    ->directory('images')
                     ->visibility('public')
                     ->columnSpan(2),
             ]);
