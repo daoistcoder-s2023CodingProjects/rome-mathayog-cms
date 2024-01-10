@@ -32,11 +32,17 @@ class ImageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
+    public static function getWidgets(): array
+    {
+        return [
+            ImageResource\Widgets\CreateImageWidget::class,
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // the uploader id should be hidden and the current auth user should be the uploader and as a text input
                 Forms\Components\TextInput::make('preview_url')
                     ->label('Image url')
                     ->placeholder('bulk_upload_images/')
@@ -45,10 +51,6 @@ class ImageResource extends Resource
                 FileUpload::make('image_url')
                     ->label('Image Upload')
                     ->image()
-                    // ->getUploadedFileNameForStorageUsing(
-                    //     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
-                    //         ->prepend('s3-'),
-                    // )
                     ->preserveFilenames()
                     ->imagePreviewHeight('250')
                     ->imageEditor()
