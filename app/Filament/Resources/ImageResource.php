@@ -75,7 +75,7 @@ class ImageResource extends Resource
                     ->size(TextColumnSize::Medium)
                     ->weight(FontWeight::Bold)
                     ->icon('heroicon-m-folder')
-                    ->copyable()
+                    ->copyable(true)
                     ->copyMessage('Image URL copied')
                     ->copyMessageDuration(1500),
                 Tables\Columns\TextColumn::make('uploader')
@@ -95,7 +95,11 @@ class ImageResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -11,6 +11,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 
+
+use Filament\Forms\Set;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+
 class CreateImageWidget extends Widget implements HasForms
 {
     use InteractsWithForms;
@@ -32,10 +37,18 @@ class CreateImageWidget extends Widget implements HasForms
             ->schema([
                 TextInput::make('preview_url')
                     ->label('Image url')
-                    ->placeholder('images/')
+                    ->placeholder('images/sample.jpg')
                     ->disabled()
                     ->columnSpan(2),
                 FileUpload::make('image_url')
+                    ->live()
+                    ->afterStateUpdated(function (Set $set, ?UploadedFile $state) {
+                        if ($state !== null) {
+                            $fileName = $state->getClientOriginalName();
+                            $filePath = 'images/' . $fileName;
+                            $set('preview_url', $filePath);
+                        }
+                    })
                     ->label('Image Upload')
                     ->image()
                     ->preserveFilenames()
